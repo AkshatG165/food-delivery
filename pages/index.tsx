@@ -1,5 +1,11 @@
+import RootLayout from '@/components/layout/RootLayout';
+
 function Homepage() {
-  return <h1>Homepage</h1>;
+  return (
+    <RootLayout>
+      <p></p>
+    </RootLayout>
+  );
 }
 
 export default Homepage;

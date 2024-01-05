@@ -1,0 +1,10 @@
+.menu {
+  width: 90%;
+  max-width: 85rem;
+  list-style: none;
+  margin: 1rem auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+}

@@ -1,0 +1,36 @@
+.filter {
+  width: 90%;
+  max-width: 85rem;
+  list-style: none;
+  margin: 1rem auto 0 auto;
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  font-size: large;
+}
+
+.prefrence {
+  display: flex;
+  align-items: center;
+}
+
+.prefrence input[type='checkbox'] {
+  margin-left: 0.5rem;
+}
+
+/* input[type='checkbox']:checked {
+  background-color: yellow;
+} */
+
+.rating select {
+  margin-left: 0.5rem;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.rating select:hover {
+  border: 2px solid;
+  padding: 1px;
+}

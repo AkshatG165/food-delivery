@@ -1,5 +1,4 @@
 import classes from './MenuItem.module.css';
-import images from '../../public/margherita-pizza.jpg';
 import star from '../../public/star.png';
 import Item from '../../model/Item';
 
@@ -19,7 +18,7 @@ const MenuItem: React.FC<Props> = ({ item }) => {
         <p>{item.rating}</p>
         <img src={star.src} alt="rating" />
       </div>
-      <img src={images.src} alt={item.name} className={classes['item-img']} />
+      <img src={item.image} alt={item.name} className={classes['item-img']} />
       <h3>{item.name}</h3>
       <p className={classes['item-price']}>${item.price}</p>
       <p className={classes['item-description']}>{item.description}</p>

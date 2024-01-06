@@ -1,8 +1,34 @@
-import RootLayout from '@/components/layout/RootLayout';
 import Menu from '@/components/menu/Menu';
+import Item from '@/model/Item';
+import { MongoClient } from 'mongodb';
 
-function Homepage() {
-  return <Menu />;
+type Props = {
+  items: Item[];
+};
+
+export default function Homepage(props: Props) {
+  return <Menu items={props.items} />;
 }
 
-export default Homepage;
+export async function getStaticProps() {
+  //connecting to database
+  const client = await MongoClient.connect(
+    'mongodb+srv://akshat:akshat123@fooddelivery.xcarl62.mongodb.net/food-delivery?retryWrites=true&w=majority'
+  );
+  const db = client.db();
+  const items = db.collection('items');
+  const result = await items.find().toArray();
+  client.close();
+
+  const itemsArr = result.map((item) => ({
+    id: item._id.toString(),
+    name: item.name,
+    price: item.price,
+    description: item.description,
+    image: item.image,
+    veg: item.veg,
+    rating: item.rating,
+  }));
+
+  return { props: { items: itemsArr } };
+}

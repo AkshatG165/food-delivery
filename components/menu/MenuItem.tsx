@@ -2,12 +2,25 @@ import classes from './MenuItem.module.css';
 import star from '../../public/star.png';
 import Item from '../../model/Item';
 import Card from '../ui/Card';
+import { useContext } from 'react';
+import { CartContext } from '@/store/cart-context';
 
 type Props = {
   item: Item;
 };
 
-const MenuItem: React.FC<Props> = ({ item }) => {
+export default function MenuItem({ item }: Props) {
+  const cartCtx = useContext(CartContext);
+
+  function handleClick() {
+    cartCtx.addItem({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: 1,
+    });
+  }
+
   return (
     <Card className={classes.item}>
       <li key={item.id}>
@@ -24,10 +37,10 @@ const MenuItem: React.FC<Props> = ({ item }) => {
         <h3>{item.name}</h3>
         <p className={classes['item-price']}>${item.price}</p>
         <p className={classes['item-description']}>{item.description}</p>
-        <button type="button">Add to Cart</button>
+        <button type="button" onClick={handleClick}>
+          Add to Cart
+        </button>
       </li>
     </Card>
   );
-};
-
-export default MenuItem;
+}

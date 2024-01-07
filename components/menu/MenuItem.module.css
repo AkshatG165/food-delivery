@@ -1,9 +1,7 @@
 .item {
   background-color: #1d1a16;
-  border-radius: 1rem;
   overflow: hidden;
   text-align: center;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   position: relative;
   display: inline-block;
 }

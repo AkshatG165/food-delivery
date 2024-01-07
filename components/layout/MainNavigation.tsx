@@ -15,7 +15,7 @@ export default function MainNavigation() {
             <Link href="/orders">Orders</Link>
           </li>
           <li>
-            <Link href="/cart">
+            <Link href="/view-cart">
               <img src={cartIcon.src} alt="cart-icon" />
               Cart
             </Link>

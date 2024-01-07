@@ -1,0 +1,31 @@
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.cart-item-details {
+  padding: 10px;
+}
+
+.cart-item-details p {
+  margin: 0;
+}
+
+.cart-item-actions {
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-actions button {
+  height: 1.5rem;
+  width: 2rem;
+  margin: 5px 10px;
+  background-color: #ffc404;
+  border: 0;
+  border-radius: 5px;
+}

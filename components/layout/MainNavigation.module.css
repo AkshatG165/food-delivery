@@ -17,7 +17,12 @@
 .list {
   list-style: none;
   display: flex;
+  align-items: center;
   gap: 1rem;
+}
+
+.list img {
+  height: 1.5rem;
 }
 
 .list a {
@@ -26,8 +31,3 @@
   color: black;
   margin-left: 1rem;
 }
-
-/* .list a:hover,
-  .list a.active {
-    color: var(--color-primary-800);
-  } */

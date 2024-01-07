@@ -4,15 +4,14 @@ import MainNavigation from './MainNavigation';
 
 type Props = {
   children: React.ReactNode;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const RootLayout: React.FC<Props> = (props) => {
+export default function RootLayout(props: Props) {
   return (
     <>
-      <MainNavigation />
+      <MainNavigation setSearchTerm={props.setSearchTerm} />
       <main className={classes.main}>{props.children}</main>
     </>
   );
-};
-
-export default RootLayout;
+}

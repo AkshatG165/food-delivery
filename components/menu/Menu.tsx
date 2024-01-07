@@ -6,6 +6,7 @@ import Item from '@/model/Item';
 
 type Props = {
   items: Item[];
+  searchTerm: string;
 };
 
 export default function Menu(props: Props) {
@@ -22,6 +23,12 @@ export default function Menu(props: Props) {
       if (ratingsFilter) return item.rating >= +ratingsFilter;
       else return true;
     })
+    .filter((item) =>
+      item.name
+        .toLowerCase()
+        // .concat(' ', item.description.toLowerCase())
+        .includes(props.searchTerm.toLowerCase())
+    )
     .map((item) => <MenuItem key={item.id} item={item} />);
 
   return (

@@ -5,7 +5,7 @@
 }
 
 .navbar {
-  width: 80%;
+  width: 90%;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -32,4 +32,27 @@
   font-size: 1.5rem;
   color: black;
   margin-left: 1rem;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.search-form input {
+  border: none;
+  width: 15rem;
+  height: 1.5rem;
+}
+
+.search-form input:focus {
+  outline: none;
+}
+
+.search-form img {
+  height: 1.2rem;
 }

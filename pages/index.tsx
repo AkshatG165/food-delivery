@@ -4,10 +4,11 @@ import { MongoClient } from 'mongodb';
 
 type Props = {
   items: Item[];
+  searchTerm: string;
 };
 
 export default function Homepage(props: Props) {
-  return <Menu items={props.items} />;
+  return <Menu items={props.items} searchTerm={props.searchTerm} />;
 }
 
 export async function getStaticProps() {

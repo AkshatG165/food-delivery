@@ -1,6 +1,5 @@
 import classes from './LoginForm.module.css';
 import Card from '../ui/Card';
-import logo from '../../public/login-logo.png';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -22,7 +21,6 @@ export default function LoginForm() {
             <p>Order delicious food, get access to your orders & more.</p>
           </div>
         )}
-        <img src={logo.src} alt={'login-logo'} />
       </div>
       <div className={classes.right}>
         <form>

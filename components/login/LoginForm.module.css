@@ -1,0 +1,68 @@
+.login {
+  max-width: 60%;
+  min-width: 600px;
+  height: 60vh;
+  margin: 2rem auto;
+  display: flex;
+}
+
+.login .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 35%;
+  padding: 1rem 2rem;
+  background-color: #ffc404;
+}
+
+.left img {
+  width: 40%;
+  margin-bottom: 1rem;
+}
+
+.login .right {
+  width: 100%;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.right input {
+  display: block;
+  height: 20px;
+  width: 100%;
+  border: none;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid lightgrey;
+  font-size: 1rem;
+}
+
+.right input:focus {
+  outline: none;
+  background-color: white;
+}
+
+.right button {
+  height: 2rem;
+  width: 100%;
+  margin: 5px 0;
+  background-color: #ffc404;
+  border: 0;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.right a {
+  display: block;
+  text-decoration: none;
+  margin-top: 5px;
+  color: black;
+}
+
+.right a:hover {
+  scale: 1.05;
+  color: blue;
+}

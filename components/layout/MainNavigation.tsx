@@ -33,6 +33,9 @@ export default function MainNavigation(props: Props) {
               Cart
             </Link>
           </li>
+          <li>
+            <Link href="/login">Login</Link>
+          </li>
         </ul>
       </nav>
     </header>

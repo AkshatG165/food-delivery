@@ -1,7 +1,7 @@
 .empty {
   max-width: 50%;
   height: 10rem;
-  margin: auto;
+  margin: 2rem auto;
   text-align: center;
   padding-top: 3rem;
   font-size: larger;
@@ -21,7 +21,7 @@
 
 .cart-whole {
   max-width: 80%;
-  margin: auto;
+  margin: 2rem auto;
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;

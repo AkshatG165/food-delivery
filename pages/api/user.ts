@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     const { name, email, password, isAdmin } = req.body;
-    const data = new User(name, email, password, isAdmin);
+    const data = new User(name, email.toLowerCase(), password, isAdmin);
 
     if (!name) res.status(422).json({ message: 'Name is required' });
     if (!email || !email.includes('@') || !email.includes('.com'))

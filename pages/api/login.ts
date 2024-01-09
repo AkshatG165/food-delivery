@@ -28,12 +28,10 @@ export default async function handler(
             message: 'Authentication failed, user does not exist',
           });
         } else if (password === result.password) {
-          //generating jwt token & storing it in local storage
+          //generating jwt token
           const token = jwt.sign(result, secretKey, {
             expiresIn: 3600,
           });
-          localStorage.setItem('jwttoken', token);
-
           res.status(201).json({
             message: 'Authentication successfull!',
             token: token,

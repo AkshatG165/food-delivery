@@ -1,5 +1,8 @@
 import { connectToDB, getCollection } from '@/util/db';
 import { NextApiRequest, NextApiResponse } from 'next';
+import jwt from 'jsonwebtoken';
+
+const secretKey = 'SecretKey';
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,13 +18,31 @@ export default async function handler(
       const client = await connectToDB();
       try {
         const result = await getCollection(client, 'users').findOne({
-          email: email,
+          email: email.toLowerCase(),
         });
         client.close();
-        res.status(201).json({
-          message: 'Users fetched successfully!',
-          result: result,
-        });
+
+        //checking if email & password matches
+        if (!result) {
+          res.status(401).json({
+            message: 'Authentication failed, user does not exist',
+          });
+        } else if (password === result.password) {
+          //generating jwt token & storing it in local storage
+          const token = jwt.sign(result, secretKey, {
+            expiresIn: 3600,
+          });
+          localStorage.setItem('jwttoken', token);
+
+          res.status(201).json({
+            message: 'Authentication successfull!',
+            token: token,
+          });
+        } else {
+          res.status(401).json({
+            message: 'Authentication failed, invalid password',
+          });
+        }
       } catch (err) {
         res
           .status(500)

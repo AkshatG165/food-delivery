@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectToDB, getCollection } from '@/util/db';
 import { checkPassword } from '@/util/auth';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       credentials: {},
@@ -47,4 +47,6 @@ export default NextAuth({
   pages: {
     signIn: '/api/login',
   },
-});
+};
+
+export default NextAuth(authOptions);

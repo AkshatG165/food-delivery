@@ -4,15 +4,20 @@ import Item from '../../model/Item';
 import Card from '../ui/Card';
 import { useContext } from 'react';
 import { CartContext } from '@/store/cart-context';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 type Props = {
   item: Item;
 };
 
 export default function MenuItem({ item }: Props) {
+  const { status } = useSession();
   const cartCtx = useContext(CartContext);
+  const router = useRouter();
 
   function handleClick() {
+    if (status === 'unauthenticated') router.replace('/login');
     cartCtx.addItem({
       id: item.id,
       name: item.name,

@@ -28,6 +28,10 @@
   justify-self: center;
 }
 
+.right .error {
+  color: red;
+}
+
 .right input {
   display: block;
   height: 20px;

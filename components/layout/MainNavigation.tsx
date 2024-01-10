@@ -3,14 +3,21 @@ import Link from 'next/link';
 import logo from '../../public/logo.png';
 import cartIcon from '../../public/cart-icon.png';
 import searchIcon from '../../public/search-icon.png';
+import { signOut, useSession } from 'next-auth/react';
 
 type Props = {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function MainNavigation(props: Props) {
-  const handleOnSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const { data: session, status } = useSession();
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.setSearchTerm(e.target.value);
+  const handleLogout = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: '/' });
+    console.log(data);
+  };
 
   return (
     <header className={classes.header}>
@@ -22,19 +29,25 @@ export default function MainNavigation(props: Props) {
           <input
             type="text"
             placeholder="Search for items"
-            onChange={handleOnSearch}
+            onChange={handleSearch}
           />
           <img src={searchIcon.src} alt="search-icon" />
         </form>
         <ul className={classes.list}>
           <li>
-            <Link href="/view-cart">
+            <Link href="/view-cart" className={classes.cart}>
               <img src={cartIcon.src} alt="cart-icon" />
               Cart
             </Link>
           </li>
           <li>
-            <Link href="/login">Login</Link>
+            {status === 'authenticated' ? (
+              <button type="button" onClick={handleLogout}>
+                Logout
+              </button>
+            ) : (
+              <Link href="/login">Login</Link>
+            )}
           </li>
         </ul>
       </nav>

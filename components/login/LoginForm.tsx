@@ -2,7 +2,7 @@ import classes from './LoginForm.module.css';
 import Card from '../ui/Card';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 export default function LoginForm() {
@@ -12,6 +12,13 @@ export default function LoginForm() {
   const password = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const query = router.query;
+
+  useEffect(() => {
+    if (name.current) name.current.value = '';
+    if (email.current) email.current.value = '';
+    if (password && password.current) password.current.value = '';
+    setError(null);
+  }, [query.signup]);
 
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,9 +38,6 @@ export default function LoginForm() {
       });
       if (!res.ok) setError((await res.json()).message);
       else {
-        if (name.current) name.current.value = '';
-        if (email.current) email.current.value = '';
-        if (password.current) password.current.value = '';
         setError(null);
         router.replace('/login');
       }
@@ -46,8 +50,6 @@ export default function LoginForm() {
 
       if (res && !res.ok) setError(res.error);
       else {
-        if (email.current) email.current.value = '';
-        if (password.current) password.current.value = '';
         setError(null);
         router.replace('/');
       }

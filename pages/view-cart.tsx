@@ -26,7 +26,11 @@ export async function getServerSideProps({ req, res }: Context) {
 
   return {
     props: {
-      session,
+      //not sending session object directly because image property is undefined & its not able to serialize it, & throwing error
+      session: {
+        user: { name: session?.user?.name, email: session?.user?.email },
+        expires: session?.expires,
+      },
     },
   };
 }

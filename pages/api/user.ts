@@ -12,9 +12,14 @@ export default async function handler(
     const hashedPassword = await hashPassword(password);
     const data = new User(name, email.toLowerCase(), hashedPassword);
 
-    if (!name) res.status(422).json({ message: 'Name is required' });
-    if (!email || !email.includes('@') || !email.includes('.com'))
+    if (!name) {
+      res.status(422).json({ message: 'Name is required' });
+      return;
+    }
+    if (!email || !email.includes('@') || !email.includes('.com')) {
       res.status(422).json({ message: 'Invalid email' });
+      return;
+    }
     if (
       !password ||
       !password.match(
@@ -25,31 +30,41 @@ export default async function handler(
         message:
           'Minimum 8 characters password with combination of uppercase, lowercase, number & special character is required.',
       });
+      return;
     }
 
     try {
       const client = await connectToDB();
       try {
         //checking for duplicate email
-        const userData = await getCollection(client, 'users').findOne({
+        const userCollection = getCollection(client, 'users');
+        const userData = await userCollection.findOne({
           email: email,
         });
-        if (userData) res.status(422).json({ message: 'Email already exists' });
+        if (userData) {
+          res.status(422).json({ message: 'Email already exists' });
+          client.close();
+          return;
+        }
 
-        //creating new user
-        const result = await getCollection(client, 'users').insertOne(data);
+        //else creating new user
+        const result = await userCollection.insertOne(data);
         res.status(201).json({
           message: 'User account created successfully!',
           result: result,
         });
         client.close();
+        return;
       } catch (err) {
         res
           .status(500)
           .json({ message: 'Some error occoured, unable to create user' });
+        client.close();
+        return;
       }
     } catch (err) {
       res.status(500).json({ message: 'Connection to database failed' });
+      return;
     }
   } else if (req.method === 'GET') {
     const params = req.body;
@@ -64,17 +79,20 @@ export default async function handler(
           message: 'Users fetched successfully!',
           result: result,
         });
+        return;
       } catch (err) {
         res
           .status(500)
           .json({ message: 'Some error occoured, unable to fetch users' });
+        client.close();
+        return;
       }
     } catch (err) {
       res.status(500).json({ message: 'Connection to database failed' });
+      return;
     }
   } else {
     res.status(405).json({ message: `${req.method} method not supported` });
+    return;
   }
 }
-
-// when there are errors users are still getting added to db

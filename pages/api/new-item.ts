@@ -19,8 +19,10 @@ export default async function handler(
       client.close();
 
       res.status(201).json({ message: 'item inserted', result: result });
+      return;
     } catch (e) {
       res.status(400).json({ message: 'item not inserted' });
+      return;
     }
   }
 }

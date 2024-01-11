@@ -3,7 +3,7 @@ import Card from '../ui/Card';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>();
@@ -12,6 +12,8 @@ export default function LoginForm() {
   const password = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const query = router.query;
+  const [isLoading, setIsLoading] = useState(false);
+  const { status } = useSession();
 
   useEffect(() => {
     if (name.current) name.current.value = '';
@@ -29,6 +31,8 @@ export default function LoginForm() {
         email: email.current ? email.current.value : '',
         password: password.current ? password.current.value : '',
       };
+
+      setIsLoading(true);
       const res = await fetch('/api/user', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -36,17 +40,21 @@ export default function LoginForm() {
           'Content-type': 'application/json',
         },
       });
+      setIsLoading(false);
+
       if (!res.ok) setError((await res.json()).message);
       else {
         setError(null);
         router.replace('/login');
       }
     } else {
+      setIsLoading(true);
       const res = await signIn('credentials', {
         email: email.current ? email.current.value : '',
         password: password.current ? password.current.value : '',
         redirect: false,
       });
+      setIsLoading(false);
 
       if (res && !res.ok) setError(res.error);
       else {
@@ -100,8 +108,17 @@ export default function LoginForm() {
             required
             ref={password}
           />
-          <button type="submit">
-            {query && query.signup === 'true' ? 'Signup' : 'Login'}
+          <button
+            type="submit"
+            disabled={isLoading || status === 'authenticated'}
+          >
+            {query && query.signup === 'true'
+              ? isLoading
+                ? 'Signing up...'
+                : 'Signup'
+              : isLoading
+              ? 'Logging in...'
+              : 'Login'}
           </button>
         </form>
         {query && query.signup === 'true' ? (

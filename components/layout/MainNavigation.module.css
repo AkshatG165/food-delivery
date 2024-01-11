@@ -2,6 +2,7 @@
   background-color: #ffc404;
   margin: 0;
   padding: 0.5rem 7.5%;
+  min-width: 70rem;
 }
 
 .navbar {

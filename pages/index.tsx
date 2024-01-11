@@ -1,6 +1,6 @@
 import Menu from '@/components/menu/Menu';
 import { Item } from '@/model/Item';
-import { MongoClient } from 'mongodb';
+import { connectToDB, getCollection } from '@/util/db';
 
 type Props = {
   items: Item[];
@@ -13,12 +13,8 @@ export default function Homepage(props: Props) {
 
 export async function getStaticProps() {
   //connecting to database
-  const client = await MongoClient.connect(
-    'mongodb+srv://akshat:akshat123@fooddelivery.xcarl62.mongodb.net/food-delivery?retryWrites=true&w=majority'
-  );
-  const db = client.db();
-  const items = db.collection('items');
-  const result = await items.find().toArray();
+  const client = await connectToDB();
+  const result = await getCollection(client, 'items').find().toArray();
   client.close();
 
   const itemsArr = result.map((item) => ({

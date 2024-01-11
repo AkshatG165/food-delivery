@@ -16,7 +16,10 @@ export default async function handler(
       res.status(422).json({ message: 'Name is required' });
       return;
     }
-    if (!email || !email.includes('@') || !email.includes('.com')) {
+    if (
+      !email ||
+      !email.match('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')
+    ) {
       res.status(422).json({ message: 'Invalid email' });
       return;
     }

@@ -10,13 +10,12 @@ type Props = {
 };
 
 export default function MainNavigation(props: Props) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.setSearchTerm(e.target.value);
   const handleLogout = async () => {
-    const data = await signOut({ redirect: false, callbackUrl: '/' });
-    console.log(data);
+    await signOut({ redirect: true, callbackUrl: '/' });
   };
 
   return (

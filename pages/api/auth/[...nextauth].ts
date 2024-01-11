@@ -41,6 +41,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  secret: 'SuperSecret',
   session: {
     maxAge: 3600,
   },

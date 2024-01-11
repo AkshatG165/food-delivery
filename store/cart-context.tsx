@@ -1,11 +1,5 @@
+import { CartItem } from '@/model/CartItem';
 import { Reducer, createContext, useReducer } from 'react';
-
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-};
 
 type Context = {
   items: CartItem[];

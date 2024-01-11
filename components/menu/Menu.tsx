@@ -2,7 +2,7 @@ import classes from './Menu.module.css';
 import MenuItem from './MenuItem';
 import { useState } from 'react';
 import Filters from './Filters';
-import Item from '@/model/Item';
+import { Item } from '@/model/Item';
 
 type Props = {
   items: Item[];

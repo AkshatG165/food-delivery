@@ -1,5 +1,5 @@
-import Item from './Item';
-import User from './User';
+import { Item } from './Item';
+import { User } from './User';
 
 export default class Order {
   user: User;

@@ -1,4 +1,4 @@
-import User from '@/model/User';
+import { User } from '@/model/User';
 import { hashPassword } from '@/util/auth';
 import { connectToDB, getCollection } from '@/util/db';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -8,9 +8,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    const { name, email, password, isAdmin } = req.body;
+    const { name, email, password } = req.body;
     const hashedPassword = await hashPassword(password);
-    const data = new User(name, email.toLowerCase(), hashedPassword, isAdmin);
+    const data = new User(name, email.toLowerCase(), hashedPassword);
 
     if (!name) res.status(422).json({ message: 'Name is required' });
     if (!email || !email.includes('@') || !email.includes('.com'))
@@ -76,3 +76,5 @@ export default async function handler(
     res.status(405).json({ message: `${req.method} method not supported` });
   }
 }
+
+// when there are errors users are still getting added to db

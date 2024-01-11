@@ -1,6 +1,6 @@
 import classes from './MenuItem.module.css';
 import star from '../../public/star.png';
-import Item from '../../model/Item';
+import { Item } from '../../model/Item';
 import Card from '../ui/Card';
 import { useContext } from 'react';
 import { CartContext } from '@/store/cart-context';

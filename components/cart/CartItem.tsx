@@ -2,15 +2,9 @@ import classes from './CartItem.module.css';
 import { CartContext } from '@/store/cart-context';
 import { useContext } from 'react';
 import Card from '../ui/Card';
+import { CartItem as CartItemModel } from '@/model/CartItem';
 
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-};
-
-export default function CartItem({ item }: { item: CartItem }) {
+export default function CartItem({ item }: { item: CartItemModel }) {
   const cartCtx = useContext(CartContext);
 
   const handleAddItem = () => cartCtx.addItem(item);

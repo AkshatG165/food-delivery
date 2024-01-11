@@ -1,5 +1,5 @@
 import Menu from '@/components/menu/Menu';
-import Item from '@/model/Item';
+import { Item } from '@/model/Item';
 import { MongoClient } from 'mongodb';
 
 type Props = {

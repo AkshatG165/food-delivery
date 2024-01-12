@@ -81,7 +81,6 @@ export default function LoginForm() {
       </div>
       <div className={classes.right}>
         <form onSubmit={handleOnSubmit}>
-          {error && <p className={classes.error}>{error}</p>}
           {query && query.signup === 'true' && (
             <input
               id="name"
@@ -120,6 +119,7 @@ export default function LoginForm() {
               ? 'Logging in...'
               : 'Login'}
           </button>
+          {error && <p className={classes.error}>{error}</p>}
         </form>
         {query && query.signup === 'true' ? (
           <p>

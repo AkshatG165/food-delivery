@@ -4,6 +4,8 @@ import logo from '../../public/logo.png';
 import cartIcon from '../../public/cart-icon.png';
 import searchIcon from '../../public/search-icon.png';
 import { signOut, useSession } from 'next-auth/react';
+import { useContext } from 'react';
+import { CartContext } from '@/store/cart-context';
 
 type Props = {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
@@ -11,10 +13,19 @@ type Props = {
 
 export default function MainNavigation(props: Props) {
   const { status } = useSession();
+  const cartCtx = useContext(CartContext);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.setSearchTerm(e.target.value);
   const handleLogout = async () => {
+    const res = await fetch('/api/user', {
+      method: 'PATCH',
+      body: JSON.stringify({ cartItems: cartCtx.items }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+
     await signOut({ redirect: true, callbackUrl: '/' });
   };
 

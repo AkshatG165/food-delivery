@@ -2,6 +2,7 @@ import { User } from '@/model/User';
 import { hashPassword } from '@/util/auth';
 import { connectToDB, getCollection } from '@/util/db';
 import { NextApiRequest, NextApiResponse } from 'next';
+import getSession from './get-session';
 
 export default async function handler(
   req: NextApiRequest,
@@ -70,12 +71,12 @@ export default async function handler(
       return;
     }
   } else if (req.method === 'GET') {
-    const params = req.body;
+    const { email } = req.query;
     try {
       const client = await connectToDB();
       try {
         const result = await getCollection(client, 'users')
-          .find(params)
+          .find({ email: email })
           .toArray();
         client.close();
         res.status(201).json({
@@ -87,6 +88,37 @@ export default async function handler(
         res
           .status(500)
           .json({ message: 'Some error occoured, unable to fetch users' });
+        client.close();
+        return;
+      }
+    } catch (err) {
+      res.status(500).json({ message: 'Connection to database failed' });
+      return;
+    }
+  } else if (req.method === 'PATCH') {
+    const data = req.body;
+    const session = await getSession(req, res);
+
+    try {
+      const client = await connectToDB();
+      try {
+        //checking for duplicate email
+        const userCollection = getCollection(client, 'users');
+        const dbRes = await userCollection.updateOne(
+          { email: session && session.user?.email },
+          { $set: data }
+        );
+        client.close();
+        if (dbRes.modifiedCount !== 1 && dbRes.matchedCount !== 1) {
+          res.status(500).json({ message: 'Unable to save cart items' });
+          return;
+        }
+        res.status(201).json({ message: 'Cart items saved successfully!' });
+        return;
+      } catch (err) {
+        res
+          .status(500)
+          .json({ message: 'Some error occoured, unable to create user' });
         client.close();
         return;
       }

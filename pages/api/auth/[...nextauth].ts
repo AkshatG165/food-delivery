@@ -55,18 +55,18 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/api/login',
   },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) return { ...token, user: user };
-      return token;
-    },
-    async session({ session, token, user }: any) {
-      return {
-        ...session,
-        user: { ...session.user, cartItems: token.user.cartItems },
-      };
-    },
-  },
+  // callbacks: {
+  //   async jwt({ token, user }) {
+  //     if (user) return { ...token, user: user };
+  //     return token;
+  //   },
+  //   async session({ session, token, user }: any) {
+  //     return {
+  //       ...session,
+  //       user: { ...session.user, cartItems: token.user.cartItems },
+  //     };
+  //   },
+  // },
 };
 
 export default NextAuth(authOptions);

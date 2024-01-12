@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectToDB, getCollection } from '@/util/db';
 import { checkPassword } from '@/util/auth';
+import { CartItem } from '@/model/CartItem';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -28,10 +29,16 @@ export const authOptions: NextAuthOptions = {
         //matching password
         const isValid = await checkPassword(password, result.password);
         if (isValid) {
-          const user: { id: string; name: string; email: string } = {
+          const user: {
+            id: string;
+            name: string;
+            email: string;
+            cartItems: CartItem[];
+          } = {
             id: result.id,
             name: result.name,
             email: result.email,
+            cartItems: result.cartItems,
           };
           return user;
         } else {
@@ -47,6 +54,18 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/api/login',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) return { ...token, user: user };
+      return token;
+    },
+    async session({ session, token, user }: any) {
+      return {
+        ...session,
+        user: { ...session.user, cartItems: token.user.cartItems },
+      };
+    },
   },
 };
 

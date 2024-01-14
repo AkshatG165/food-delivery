@@ -102,7 +102,6 @@ export default async function handler(
     try {
       const client = await connectToDB();
       try {
-        //checking for duplicate email
         const userCollection = getCollection(client, 'users');
         const dbRes = await userCollection.updateOne(
           { email: session && session.user?.email },

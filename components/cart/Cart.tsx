@@ -1,10 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import classes from './Cart.module.css';
 import Card from '../ui/Card';
 import CartItem from './CartItem';
 import { CartContext } from '@/store/cart-context';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import PriceDetails from './PriceDetails';
 
 let dataUpdated = false;
 
@@ -13,8 +14,12 @@ export default function Cart() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    if (session && session.user.cartItems.length > 0 && dataUpdated === false) {
-      session.user.cartItems.forEach((item) => cartCtx.addItem(item));
+    if (
+      session &&
+      session.user.cartItems?.length > 0 &&
+      dataUpdated === false
+    ) {
+      session?.user.cartItems.forEach((item) => cartCtx.addItem(item));
       dataUpdated = true;
     }
   }, [session]);
@@ -28,9 +33,6 @@ export default function Cart() {
   const cartTotal = cartCtx.items
     .map((item) => item.quantity * item.price)
     .reduce((total, currVal) => total + currVal, 0);
-  const gst = cartTotal * 0.07;
-  const deliveryCharge = cartCtx.items.length * 20;
-  const grandTotal = cartTotal + gst + deliveryCharge;
 
   return cartCtx.items.length === 0 ? (
     <Card className={classes.empty}>
@@ -43,26 +45,7 @@ export default function Cart() {
         <h2>Your Cart</h2>
         <ul className={classes['cart-list']}>{cartItms}</ul>
       </Card>
-      <Card className={classes['price-details']}>
-        <h2>Price Details</h2>
-        <div>
-          <span>Subtotal</span>
-          <span>{cartTotal.toFixed(2)}</span>
-        </div>
-        <div>
-          <span>GST</span>
-          <span>{gst.toFixed(2)}</span>
-        </div>
-        <div>
-          <span>Delivery Charge</span>
-          <span>{deliveryCharge.toFixed(2)}</span>
-        </div>
-        <div className={classes['grand-total']}>
-          <span>Grand Total</span>
-          <span>{grandTotal.toFixed(2)}</span>
-        </div>
-        <Link href="/checkout">Place Order</Link>
-      </Card>
+      <PriceDetails cartTotal={cartTotal} />
     </div>
   );
 }

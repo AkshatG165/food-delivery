@@ -12,21 +12,25 @@ export default function PriceDetails({ cartTotal }: { cartTotal: number }) {
       <h2>Price Details</h2>
       <div>
         <span className={classes.text}>Subtotal</span>
-        <span>{cartTotal.toFixed(2)}</span>
+        <span className={classes.value}>{cartTotal.toFixed(2)}</span>
       </div>
       <div>
         <span className={classes.text}>GST</span>
-        <span>{gst.toFixed(2)}</span>
+        <span className={classes.value}>{gst.toFixed(2)}</span>
       </div>
       <div>
         <span className={classes.text}>Delivery Charge</span>
-        <span className={classes['delivery-charge']}>
+        <span
+          className={
+            !deliveryCharge ? classes['delivery-charge'] : classes.value
+          }
+        >
           {deliveryCharge === 0 ? 'Free' : deliveryCharge}
         </span>
       </div>
       <div className={classes['grand-total']}>
         <span className={classes.text}>Grand Total</span>
-        <span>{grandTotal.toFixed(2)}</span>
+        <span className={classes.value}>{grandTotal.toFixed(2)}</span>
       </div>
       <Link href="/checkout">Place Order</Link>
     </Card>

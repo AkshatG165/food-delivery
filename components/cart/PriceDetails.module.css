@@ -2,7 +2,7 @@
   min-width: 30%;
   padding: 0 1rem 1rem 1rem;
   text-align: center;
-  min-height: 19rem;
+  height: 19rem;
 }
 
 .price-details h2 {
@@ -16,13 +16,15 @@
   justify-content: space-between;
 }
 
-.price-details .text {
+.price-details .text,
+.price-details .value {
   margin-top: 10px;
 }
 
 .delivery-charge {
   color: green;
   font-weight: bold;
+  margin-top: 10px;
 }
 
 .grand-total {

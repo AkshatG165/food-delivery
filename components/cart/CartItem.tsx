@@ -1,15 +1,14 @@
 import classes from './CartItem.module.css';
-import { CartContext } from '@/store/cart-context';
-import { useContext } from 'react';
 import Card from '../ui/Card';
 import { CartItem as CartItemModel } from '@/model/CartItem';
 
-export default function CartItem({ item }: { item: CartItemModel }) {
-  const cartCtx = useContext(CartContext);
+type Props = {
+  item: CartItemModel;
+  onItemAdd: (cartItem: CartItemModel) => void;
+  onItemRemove: (cartItem: CartItemModel) => void;
+};
 
-  const handleAddItem = () => cartCtx.addItem(item);
-  const handleRemoveItem = () => cartCtx.removeItem(item);
-
+export default function CartItem({ item, onItemAdd, onItemRemove }: Props) {
   return (
     <Card className={classes['cart-item']}>
       <div className={classes['cart-item-details']}>
@@ -17,11 +16,11 @@ export default function CartItem({ item }: { item: CartItemModel }) {
         <p>${item.price}</p>
       </div>
       <div className={classes['cart-item-actions']}>
-        <button type="button" onClick={handleRemoveItem}>
+        <button type="button" onClick={() => onItemRemove(item)}>
           -
         </button>
         <p>{item.quantity}</p>
-        <button type="button" onClick={handleAddItem}>
+        <button type="button" onClick={() => onItemAdd(item)}>
           +
         </button>
       </div>

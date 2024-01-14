@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import classes from './Cart.module.css';
 import Card from '../ui/Card';
 import CartItem from './CartItem';
@@ -6,12 +6,33 @@ import { CartContext } from '@/store/cart-context';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import PriceDetails from './PriceDetails';
+import { CartItem as CartItemModel } from '@/model/CartItem';
 
 let dataUpdated = false;
+let cartItem: CartItemModel | undefined;
 
 export default function Cart() {
   const cartCtx = useContext(CartContext);
   const { data: session } = useSession();
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const updateItemsInDB = async () => {
+      const res = await fetch('/api/user', {
+        method: 'PATCH',
+        body: JSON.stringify({ cartItems: cartCtx.items }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+      if (!res.ok) {
+        cartCtx.removeItem(cartItem as CartItemModel);
+        setError('Unable to update cart, try again after some time.');
+      }
+    };
+    if (cartItem) updateItemsInDB();
+    cartItem = undefined;
+  }, [cartCtx.items]);
 
   useEffect(() => {
     if (
@@ -24,9 +45,19 @@ export default function Cart() {
     }
   }, [session]);
 
+  function onItemAdd(item: CartItemModel) {
+    cartItem = item;
+    cartCtx.addItem(item);
+  }
+
+  function onItemRemove(item: CartItemModel) {
+    cartItem = item;
+    cartCtx.removeItem(item);
+  }
+
   const cartItems = cartCtx.items.map((item) => (
     <li key={item.id}>
-      <CartItem item={item} />
+      <CartItem item={item} onItemAdd={onItemAdd} onItemRemove={onItemRemove} />
     </li>
   ));
 

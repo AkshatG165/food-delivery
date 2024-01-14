@@ -2,28 +2,23 @@ import classes from './MenuItem.module.css';
 import star from '../../public/star.png';
 import { Item } from '../../model/Item';
 import Card from '../ui/Card';
-import { useContext } from 'react';
-import { CartContext } from '@/store/cart-context';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { CartItem } from '@/model/CartItem';
 
 type Props = {
   item: Item;
+  onItemAdd: (cartItem: CartItem) => void;
 };
 
-export default function MenuItem({ item }: Props) {
+export default function MenuItem({ item, onItemAdd }: Props) {
   const { status } = useSession();
-  const cartCtx = useContext(CartContext);
   const router = useRouter();
+  const cartItem = new CartItem(item.id, item.name, item.price, 1);
 
   function handleClick() {
     if (status === 'unauthenticated') router.replace('/login');
-    cartCtx.addItem({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: 1,
-    });
+    onItemAdd(cartItem);
   }
 
   return (

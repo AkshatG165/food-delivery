@@ -1,12 +1,23 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import classes from './Cart.module.css';
 import Card from '../ui/Card';
 import CartItem from './CartItem';
 import { CartContext } from '@/store/cart-context';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+
+let dataUpdated = false;
 
 export default function Cart() {
   const cartCtx = useContext(CartContext);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session && session.user.cartItems.length > 0 && dataUpdated === false) {
+      session.user.cartItems.forEach((item) => cartCtx.addItem(item));
+      dataUpdated = true;
+    }
+  }, [session]);
 
   const cartItms = cartCtx.items.map((item) => (
     <li key={item.id}>

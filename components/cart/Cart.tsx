@@ -24,7 +24,7 @@ export default function Cart() {
     }
   }, [session]);
 
-  const cartItms = cartCtx.items.map((item) => (
+  const cartItems = cartCtx.items.map((item) => (
     <li key={item.id}>
       <CartItem item={item} />
     </li>
@@ -43,7 +43,7 @@ export default function Cart() {
     <div className={classes['cart-whole']}>
       <Card className={classes['item-details']}>
         <h2>Your Cart</h2>
-        <ul className={classes['cart-list']}>{cartItms}</ul>
+        <ul className={classes['cart-list']}>{cartItems}</ul>
       </Card>
       <PriceDetails cartTotal={cartTotal} />
     </div>

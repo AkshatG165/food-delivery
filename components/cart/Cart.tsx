@@ -39,7 +39,9 @@ export default function Cart() {
   //for retreving data
   useEffect(() => {
     const getCartItems = async () => {
-      const res = await fetch(`/api/user?email=${session?.user.email}`);
+      const res = await fetch(
+        `/api/user?email=${session && session.user ? session?.user.email : ''}`
+      );
       if (!res.ok)
         setError(
           'Unable to fetch cart items, please try again after some time'
@@ -50,11 +52,11 @@ export default function Cart() {
         if (cartItems.length > 0 && !dataUpdated) {
           cartItems.forEach((item) => cartCtx.addItem(item));
           dataUpdated = true;
-          setIsLoading(false);
         }
       }
     };
-    getCartItems();
+    if (!dataUpdated) getCartItems();
+    setIsLoading(false);
   }, []);
 
   function onItemAdd(item: CartItemModel) {

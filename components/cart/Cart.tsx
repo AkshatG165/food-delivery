@@ -4,18 +4,20 @@ import Card from '../ui/Card';
 import CartItem from './CartItem';
 import { CartContext } from '@/store/cart-context';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import PriceDetails from './PriceDetails';
 import { CartItem as CartItemModel } from '@/model/CartItem';
+import { useSession } from 'next-auth/react';
 
 let dataUpdated = false;
 let cartItem: CartItemModel | undefined;
 
 export default function Cart() {
-  const cartCtx = useContext(CartContext);
   const { data: session } = useSession();
+  const cartCtx = useContext(CartContext);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
+  //for updating data
   useEffect(() => {
     const updateItemsInDB = async () => {
       const res = await fetch('/api/user', {
@@ -34,16 +36,26 @@ export default function Cart() {
     cartItem = undefined;
   }, [cartCtx.items]);
 
+  //for retreving data
   useEffect(() => {
-    if (
-      session &&
-      session.user.cartItems?.length > 0 &&
-      dataUpdated === false
-    ) {
-      session?.user.cartItems.forEach((item) => cartCtx.addItem(item));
-      dataUpdated = true;
-    }
-  }, [session]);
+    const getCartItems = async () => {
+      const res = await fetch(`/api/user?email=${session?.user.email}`);
+      if (!res.ok)
+        setError(
+          'Unable to fetch cart items, please try again after some time'
+        );
+      else {
+        const cartItems: CartItemModel[] = (await res.json()).result[0]
+          .cartItems;
+        if (cartItems.length > 0 && !dataUpdated) {
+          cartItems.forEach((item) => cartCtx.addItem(item));
+          dataUpdated = true;
+          setIsLoading(false);
+        }
+      }
+    };
+    getCartItems();
+  }, []);
 
   function onItemAdd(item: CartItemModel) {
     cartItem = item;
@@ -64,6 +76,9 @@ export default function Cart() {
   const cartTotal = cartCtx.items
     .map((item) => item.quantity * item.price)
     .reduce((total, currVal) => total + currVal, 0);
+
+  if (isLoading)
+    return <p style={{ textAlign: 'center', fontSize: '2rem' }}>Loading...</p>;
 
   return cartCtx.items.length === 0 ? (
     <Card className={classes.empty}>

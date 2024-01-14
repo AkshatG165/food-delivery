@@ -6,6 +6,7 @@ import searchIcon from '../../public/search-icon.png';
 import { signOut, useSession } from 'next-auth/react';
 import { useContext } from 'react';
 import { CartContext } from '@/store/cart-context';
+import { useRouter } from 'next/router';
 
 type Props = {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
@@ -14,6 +15,7 @@ type Props = {
 export default function MainNavigation(props: Props) {
   const { status } = useSession();
   const cartCtx = useContext(CartContext);
+  const router = useRouter();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.setSearchTerm(e.target.value);
@@ -35,14 +37,16 @@ export default function MainNavigation(props: Props) {
         <Link href="/">
           <img src={logo.src} alt="FoodDeliveryLogo" />
         </Link>
-        <form className={classes['search-form']}>
-          <input
-            type="text"
-            placeholder="Search for items"
-            onChange={handleSearch}
-          />
-          <img src={searchIcon.src} alt="search-icon" />
-        </form>
+        {router.asPath === '/' && (
+          <form className={classes['search-form']}>
+            <input
+              type="text"
+              placeholder="Search for items"
+              onChange={handleSearch}
+            />
+            <img src={searchIcon.src} alt="search-icon" />
+          </form>
+        )}
         <ul className={classes.list}>
           <li>
             <Link href="/view-cart" className={classes.cart}>

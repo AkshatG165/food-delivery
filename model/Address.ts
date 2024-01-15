@@ -8,6 +8,7 @@ export class Address {
   city: string;
   state: string;
   location: { lat: string; long: string };
+  isDefault: boolean;
 
   constructor(
     title: string,
@@ -17,7 +18,8 @@ export class Address {
     address: string,
     city: string,
     state: string,
-    location: { lat: string; long: string } = { lat: '', long: '' }
+    location: { lat: string; long: string } = { lat: '', long: '' },
+    isDefault: boolean = false
   ) {
     this.id = Math.floor(Math.random() * Date.now() * 100).toString();
     this.title = title;
@@ -28,5 +30,6 @@ export class Address {
     this.city = city;
     this.state = state;
     this.location = location;
+    this.isDefault = isDefault;
   }
 }

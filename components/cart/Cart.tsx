@@ -54,9 +54,10 @@ export default function Cart() {
           dataUpdated = true;
         }
       }
+      setIsLoading(false);
     };
     if (!dataUpdated) getCartItems();
-    setIsLoading(false);
+    else setIsLoading(false);
   }, []);
 
   function onItemAdd(item: CartItemModel) {

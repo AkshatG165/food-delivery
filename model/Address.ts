@@ -10,7 +10,6 @@ export class Address {
   location: { lat: string; long: string };
 
   constructor(
-    id: string,
     title: string,
     name: string,
     mobile: number,
@@ -20,7 +19,7 @@ export class Address {
     state: string,
     location: { lat: string; long: string } = { lat: '', long: '' }
   ) {
-    this.id = id;
+    this.id = Math.floor(Math.random() * Date.now() * 100).toString();
     this.title = title;
     this.name = name;
     this.mobile = mobile;

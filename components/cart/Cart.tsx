@@ -20,7 +20,7 @@ export default function Cart() {
   //for updating data
   useEffect(() => {
     const updateItemsInDB = async () => {
-      const res = await fetch('/api/user', {
+      const res = await fetch('/api/user/update-cart', {
         method: 'PATCH',
         body: JSON.stringify({ cartItems: cartCtx.items }),
         headers: {

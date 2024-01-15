@@ -18,7 +18,7 @@ export class Address {
     address: string,
     city: string,
     state: string,
-    location: { lat: string; long: string }
+    location: { lat: string; long: string } = { lat: '', long: '' }
   ) {
     this.id = id;
     this.title = title;

@@ -1,4 +1,4 @@
-import { Address } from 'cluster';
+import { Address } from './Address';
 import { CartItem } from './CartItem';
 
 export class User {

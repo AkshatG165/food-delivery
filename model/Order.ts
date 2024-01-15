@@ -1,16 +1,11 @@
 import { Item } from './Item';
 import { User } from './User';
+import { Address } from './Address';
 
 export default class Order {
   user: User;
   items: Item[];
-  shippingAddress: {
-    fullName: string;
-    address: string;
-    city: string;
-    postalCode: string;
-    country: string;
-  };
+  shippingAddress: Address;
   totalPrice: number;
   paymentMethod: string;
   paymentResult: { id: string; status: string; email: string };
@@ -21,13 +16,7 @@ export default class Order {
   constructor(
     user: User,
     items: Item[],
-    shippingAddress: {
-      fullName: string;
-      address: string;
-      city: string;
-      postalCode: string;
-      country: string;
-    },
+    shippingAddress: Address,
     totalPrice: number,
     paymentMethod: string,
     paymentResult: { id: string; status: string; email: string },

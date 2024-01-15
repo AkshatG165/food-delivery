@@ -1,4 +1,4 @@
-export class CartItem {
+export class Address {
   id: string;
   title: string;
   name: string;

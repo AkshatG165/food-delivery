@@ -1,8 +1,10 @@
 import classes from './PriceDetails.module.css';
 import Card from '../ui/Card';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function PriceDetails({ cartTotal }: { cartTotal: number }) {
+  const router = useRouter();
   const gst = cartTotal * 0.07;
   const deliveryCharge = cartTotal > 499 ? 0 : 40;
   const grandTotal = cartTotal + gst + deliveryCharge;
@@ -32,7 +34,9 @@ export default function PriceDetails({ cartTotal }: { cartTotal: number }) {
         <span className={classes.text}>Grand Total</span>
         <span className={classes.value}>{grandTotal.toFixed(2)}</span>
       </div>
-      <Link href={`/checkout?cartTotal=${cartTotal}`}>Place Order</Link>
+      <Link href={`/checkout?cartTotal=${cartTotal}`}>
+        {router.asPath === '/view-cart' ? 'Place Order' : 'Checkout'}
+      </Link>
     </Card>
   );
 }

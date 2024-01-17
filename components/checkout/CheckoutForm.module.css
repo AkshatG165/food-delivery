@@ -1,0 +1,35 @@
+.checkout {
+  max-width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.address-details {
+  min-width: 63%;
+  padding: 0 1rem;
+}
+
+.addresses {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.address-list {
+  list-style: none;
+  padding: 0;
+}
+
+.addresses button {
+  height: 2.5rem;
+  width: 10rem;
+  margin: 1rem 0;
+  margin-left: 0.5rem;
+  background-color: #ffc404;
+  border: 0;
+  border-radius: 5px;
+  font-size: 1rem;
+}

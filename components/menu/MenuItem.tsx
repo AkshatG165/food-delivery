@@ -18,7 +18,7 @@ export default function MenuItem({ item, onItemAdd }: Props) {
 
   function handleClick() {
     if (status === 'unauthenticated') router.replace('/login');
-    onItemAdd(cartItem);
+    else onItemAdd(cartItem);
   }
 
   return (

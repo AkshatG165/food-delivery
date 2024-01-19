@@ -9,7 +9,18 @@ export default async function handler(
 ) {
   //for updating an address
   if (req.method === 'PATCH') {
-    const { id, title, name, mobile, pincode, address, city, state } = req.body;
+    const {
+      id,
+      title,
+      name,
+      mobile,
+      pincode,
+      address,
+      city,
+      state,
+      location,
+      isDefault,
+    } = req.body;
     const session = await getSession(req, res);
 
     if (!title || !name || !mobile || !pincode || !address || !city || !state) {
@@ -21,13 +32,16 @@ export default async function handler(
 
     //creating an Address object for inserting in db
     const updatedAddres = new Address(
+      id,
       title,
       name,
       mobile,
       pincode,
       address,
       city,
-      state
+      state,
+      location,
+      isDefault
     );
 
     try {

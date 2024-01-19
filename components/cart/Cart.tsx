@@ -81,7 +81,13 @@ export default function Cart() {
     .reduce((total, currVal) => total + currVal, 0);
 
   if (isLoading)
-    return <p style={{ textAlign: 'center', fontSize: '2rem' }}>Loading...</p>;
+    return (
+      <>
+        <div className={classes['loader-overlay']}>
+          <div className={classes.loader}></div>
+        </div>
+      </>
+    );
 
   return cartCtx.items.length === 0 ? (
     <Card className={classes.empty}>

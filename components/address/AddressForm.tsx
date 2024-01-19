@@ -1,17 +1,45 @@
 import { useRouter } from 'next/router';
 import classes from './AddressForm.module.css';
-import Link from 'next/link';
 import { Address } from '@/model/Address';
+import { useState } from 'react';
 
 type Props = {
   address: Address | undefined;
+  setEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AddressForm({ address }: Props) {
+export default function AddressForm({ address, setEditing }: Props) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const fd = new FormData(e.currentTarget);
+    const data = {
+      ...Object.fromEntries(fd.entries()),
+      id: address?.id,
+      isDefault: address?.isDefault,
+    };
+
+    setIsLoading(true);
+    const res = await fetch('/api/user/update-address', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    if (!res.ok) setError('Unable to update address');
+    setIsLoading(false);
+    router.push(`${router.asPath.split('&')[0]}&editAddress=false`);
+  }
+
+  const handleCancel = () => setEditing(false);
 
   return (
-    <form className={classes['address-form']}>
+    <form className={classes['address-form']} onSubmit={handleSubmit}>
       <p>Edit Address</p>
       <div className={classes.row}>
         <div>
@@ -88,11 +116,11 @@ export default function AddressForm({ address }: Props) {
           />
         </div>
       </div>
-      <div className={classes['button-link']}>
-        <button>Save</button>
-        <Link href={`${router.asPath.split('&')[0]}&editAddress=false`}>
+      <div className={classes['btns']}>
+        <button disabled={isLoading}>{isLoading ? 'Saving..' : 'Save'}</button>
+        <button type="button" onClick={handleCancel}>
           Cancel
-        </Link>
+        </button>
       </div>
     </form>
   );

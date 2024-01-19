@@ -10,8 +10,9 @@
 
 .row,
 .button-link {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 4rem;
   padding: 1rem 0;
 }
 
@@ -40,14 +41,15 @@
   background-color: white;
 }
 
-.button-link {
+.btns {
+  display: flex;
   justify-content: flex-end;
   padding-bottom: 0;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.button-link button,
-.button-link a {
-  display: block;
+.btns button {
   width: auto;
   text-align: center;
   text-decoration: none;
@@ -58,8 +60,6 @@
   padding: 10px;
   min-width: 5rem;
   font-size: medium;
-  margin: 0;
-  margin-left: 1rem;
 }
 
 .row a:hover {

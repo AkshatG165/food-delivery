@@ -8,8 +8,8 @@
   right: 0;
   bottom: 0;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.5);
-  height: 80vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  height: 100vh;
   display: grid;
   place-items: center;
 }

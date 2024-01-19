@@ -14,8 +14,8 @@ export default function CheckoutForm({ addresses }: Props) {
   const query = router.query;
 
   return (
-    <div className={classes['checkout']}>
-      <div className={classes['address-details']}>
+    <div className={classes['checkout-page']}>
+      <div className={classes['confirm-details']}>
         <Address addresses={addresses} />
         <Payment />
       </div>

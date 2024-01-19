@@ -34,7 +34,7 @@ export default function PriceDetails({ cartTotal }: { cartTotal: number }) {
         <span className={classes.text}>Grand Total</span>
         <span className={classes.value}>{grandTotal.toFixed(2)}</span>
       </div>
-      <Link href={`/checkout?cartTotal=${cartTotal}`}>
+      <Link href={`/checkout`}>
         {router.asPath === '/view-cart' ? 'Place Order' : 'Checkout'}
       </Link>
     </Card>

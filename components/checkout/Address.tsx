@@ -27,7 +27,7 @@ export default function Address({ addresses }: Props) {
           <h2>Address</h2>
           <ul className={classes['address-list']}>{addressList}</ul>
         </div>
-        <div>
+        <div className={classes.buttons}>
           <button type="button">Add New</button>
           <button type="button">Confirm Address</button>
         </div>

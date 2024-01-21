@@ -1,4 +1,4 @@
-.address-item {
+.list-item {
   margin: 0.5rem 0;
   padding: 1rem 0.5rem;
   display: flex;
@@ -19,9 +19,18 @@
   font-weight: bold;
 }
 
-.heading a {
+.edit-btn {
   color: #0075ff;
   padding-right: 5px;
+  border: none;
+  background-color: white;
+  font-size: medium;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.edit-btn:hover {
+  scale: 1;
 }
 
 .title {

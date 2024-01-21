@@ -28,3 +28,33 @@
   border-radius: 5px;
   font-size: 1rem;
 }
+
+.empty {
+  max-width: 50%;
+  height: 14rem;
+  margin: 0 auto;
+  padding-top: 6rem;
+  font-size: larger;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty button {
+  display: block;
+  margin: 1rem auto;
+  text-align: center;
+  background-color: #ffc404;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: medium;
+}
+
+.new-address {
+  margin: 0.5rem 0;
+  padding: 1rem 0.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}

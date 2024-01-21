@@ -4,18 +4,25 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 type Props = {
-  address: Address | undefined;
-  setEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  address?: Address;
+  setEditing?: React.Dispatch<React.SetStateAction<boolean>>;
+  addNew?: boolean;
+  setAddNew?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AddressForm({ address, setEditing }: Props) {
+export default function AddressForm({
+  address,
+  setEditing,
+  addNew,
+  setAddNew,
+}: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
+    let url = '/api/user/update-address';
     const fd = new FormData(e.currentTarget);
     const data = {
       ...Object.fromEntries(fd.entries()),
@@ -23,25 +30,35 @@ export default function AddressForm({ address, setEditing }: Props) {
       isDefault: address?.isDefault,
     };
 
+    if (addNew) url = '/api/user/add-address';
+
     setIsLoading(true);
-    const res = await fetch('/api/user/update-address', {
+    const res = await fetch(url, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json',
       },
     });
-    if (!res.ok) setError('Unable to update address');
     setIsLoading(false);
-    setEditing(false);
+    if (!res.ok)
+      addNew
+        ? setError('Unable to add address')
+        : setError('Unable to update address');
+
+    if (setEditing) setEditing(false);
+    if (setAddNew) setAddNew(false);
     router.replace(router.asPath);
   }
 
-  const handleCancel = () => setEditing(false);
+  const handleCancel = () => {
+    if (setEditing) setEditing(false);
+    if (setAddNew) setAddNew(false);
+  };
 
   return (
     <form className={classes['address-form']} onSubmit={handleSubmit}>
-      <p>Edit Address</p>
+      <p>{addNew ? 'Add New Address' : 'Edit Address'}</p>
       <div className={classes.row}>
         <div>
           <label>Name</label>

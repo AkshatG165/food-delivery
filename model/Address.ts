@@ -11,7 +11,6 @@ export class Address {
   isDefault: boolean;
 
   constructor(
-    id: string = Math.floor(Math.random() * Date.now() * 100).toString(),
     title: string,
     name: string,
     mobile: number,
@@ -19,8 +18,9 @@ export class Address {
     address: string,
     city: string,
     state: string,
-    location: { lat: string; long: string } = { lat: '', long: '' },
-    isDefault: boolean = false
+    id: string = Math.floor(Math.random() * Date.now() * 100).toString(),
+    isDefault: boolean = false,
+    location: { lat: string; long: string } = { lat: '', long: '' }
   ) {
     this.id = id;
     this.title = title;

@@ -1,5 +1,6 @@
 import classes from './AddressForm.module.css';
 import { Address } from '@/model/Address';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
 };
 
 export default function AddressForm({ address, setEditing }: Props) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -32,6 +34,7 @@ export default function AddressForm({ address, setEditing }: Props) {
     if (!res.ok) setError('Unable to update address');
     setIsLoading(false);
     setEditing(false);
+    router.replace(router.asPath);
   }
 
   const handleCancel = () => setEditing(false);

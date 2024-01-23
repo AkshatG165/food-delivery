@@ -11,8 +11,8 @@ export default async function handler(
   if (req.method === 'PATCH') {
     const {
       id,
-      title,
       name,
+      title,
       mobile,
       pincode,
       address,
@@ -32,7 +32,6 @@ export default async function handler(
 
     //creating an Address object for inserting in db
     const updatedAddres = new Address(
-      id,
       title,
       name,
       mobile,
@@ -40,8 +39,9 @@ export default async function handler(
       address,
       city,
       state,
-      location,
-      isDefault
+      id,
+      isDefault,
+      location
     );
 
     try {
@@ -62,6 +62,9 @@ export default async function handler(
         .status(500)
         .json({ message: 'Some error occurred, unable to update address' });
     }
+    return res
+      .status(201)
+      .json({ message: `${req.method} method not supported` });
   } else {
     res.status(405).json({ message: `${req.method} method not supported` });
     return;

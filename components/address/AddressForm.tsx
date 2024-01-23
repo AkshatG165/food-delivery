@@ -28,8 +28,10 @@ export default function AddressForm({
       ...Object.fromEntries(fd.entries()),
       id: address?.id,
       isDefault: address?.isDefault,
+      location: address?.location,
     };
 
+    console.log(Object.fromEntries(fd.entries()));
     if (addNew) url = '/api/user/add-address';
 
     setIsLoading(true);

@@ -1,20 +1,19 @@
 import { Item } from './Item';
-import { User } from './User';
 import { Address } from './Address';
 
 export default class Order {
-  user: User;
+  userEmail: string;
   items: Item[];
   shippingAddress: Address;
   totalPrice: number;
   paymentMethod: string;
-  paymentResult: { id: string; status: string; email: string };
+  paymentResult: { id: string; status: string };
   isDelivered: boolean;
   orderDateTime: Date;
   deliveredAt: Date;
 
   constructor(
-    user: User,
+    userEmail: string,
     items: Item[],
     shippingAddress: Address,
     totalPrice: number,
@@ -24,7 +23,7 @@ export default class Order {
     orderDateTime: Date,
     deliveredAt: Date
   ) {
-    this.user = user;
+    this.userEmail = userEmail;
     this.items = items;
     this.shippingAddress = shippingAddress;
     this.totalPrice = totalPrice;

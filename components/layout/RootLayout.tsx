@@ -12,6 +12,7 @@ export default function RootLayout(props: Props) {
     <>
       <MainNavigation setSearchTerm={props.setSearchTerm} />
       <main className={classes.main}>{props.children}</main>
+      <script src="https://checkout.razorpay.com/v1/checkout.js" />
     </>
   );
 }

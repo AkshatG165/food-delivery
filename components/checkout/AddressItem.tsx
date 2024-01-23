@@ -5,8 +5,8 @@ import AddressForm from '../address/AddressForm';
 
 type Props = {
   address: Address;
-  selected: string;
-  setSelected: (e: string) => void;
+  selectedAddress: Address | undefined;
+  setSelectedAddress: React.Dispatch<React.SetStateAction<Address | undefined>>;
   editing: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   addNew: boolean;
@@ -15,21 +15,21 @@ type Props = {
 
 export default function AddressItem({
   address,
-  selected,
-  setSelected,
+  selectedAddress,
+  setSelectedAddress,
   editing,
   setEditing,
   addNew,
   setAddNew,
 }: Props) {
-  const isChecked = selected
-    ? selected === address.id
+  const isChecked = selectedAddress
+    ? selectedAddress.id === address.id
     : address.isDefault === true;
 
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditing(false);
     setAddNew(false);
-    setSelected(e.currentTarget.id);
+    setSelectedAddress(address);
   };
   const handleEdit = () => setEditing(true);
 
@@ -54,7 +54,7 @@ export default function AddressItem({
                 <span>{address.mobile} </span>
                 <span className={classes.title}>{address.title} </span>
               </div>
-              {selected && isChecked && !addNew && (
+              {selectedAddress && isChecked && !addNew && (
                 <button className={classes['edit-btn']} onClick={handleEdit}>
                   Edit
                 </button>

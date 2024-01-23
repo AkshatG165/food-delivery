@@ -7,19 +7,18 @@ import AddressForm from '../address/AddressForm';
 
 type Props = {
   addresses: AddressModel[];
+  selectedAddress: AddressModel | undefined;
+  setSelectedAddress: React.Dispatch<
+    React.SetStateAction<AddressModel | undefined>
+  >;
 };
 
-export default function Address({ addresses }: Props) {
-  //setting initial state to the item id where isDefault is true
-  let defaultAddress = '';
-  if (addresses.length > 0) {
-    defaultAddress =
-      addresses?.filter((item) => item.isDefault === true).length > 0
-        ? addresses?.filter((item) => item.isDefault === true)[0].id
-        : addresses[0].id;
-  }
-
-  const [selected, setSelected] = useState(defaultAddress);
+export default function Address({
+  addresses,
+  selectedAddress,
+  setSelectedAddress,
+}: Props) {
+  //setting initial state to the address where isDefault is true
   const [editing, setEditing] = useState(false);
   const [addNew, setAddNew] = useState(false);
 
@@ -27,8 +26,8 @@ export default function Address({ addresses }: Props) {
     <AddressItem
       key={item.id}
       address={item}
-      selected={selected}
-      setSelected={setSelected}
+      selectedAddress={selectedAddress}
+      setSelectedAddress={setSelectedAddress}
       editing={editing}
       setEditing={setEditing}
       addNew={addNew}
@@ -49,7 +48,6 @@ export default function Address({ addresses }: Props) {
     setEditing(false);
     setAddNew(true);
   };
-  const handleConfirm = () => setEditing(false);
 
   return (
     <Card className={classes['address-details']}>
@@ -69,13 +67,6 @@ export default function Address({ addresses }: Props) {
               disabled={editing || addNew}
             >
               Add New
-            </button>
-            <button
-              type="button"
-              onClick={handleConfirm}
-              disabled={editing || addNew}
-            >
-              Confirm Address
             </button>
           </div>
         </div>

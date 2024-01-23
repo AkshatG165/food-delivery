@@ -31,7 +31,6 @@ export default function AddressForm({
       location: address?.location,
     };
 
-    console.log(Object.fromEntries(fd.entries()));
     if (addNew) url = '/api/user/add-address';
 
     setIsLoading(true);

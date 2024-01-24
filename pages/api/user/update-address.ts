@@ -1,6 +1,5 @@
 import { connectToDB, getCollection } from '@/util/db';
 import { NextApiRequest, NextApiResponse } from 'next';
-import getSession from '../get-session';
 import { Address } from '@/model/Address';
 
 export default async function handler(
@@ -21,7 +20,6 @@ export default async function handler(
       location,
       isDefault,
     } = req.body;
-    const session = await getSession(req, res);
 
     if (!title || !name || !mobile || !pincode || !address || !city || !state) {
       res.status(422).json({
@@ -62,11 +60,9 @@ export default async function handler(
         .status(500)
         .json({ message: 'Some error occurred, unable to update address' });
     }
-    return res
-      .status(201)
-      .json({ message: `${req.method} method not supported` });
   } else {
-    res.status(405).json({ message: `${req.method} method not supported` });
-    return;
+    return res
+      .status(405)
+      .json({ message: `${req.method} method not supported` });
   }
 }

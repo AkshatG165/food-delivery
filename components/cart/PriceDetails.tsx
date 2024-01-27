@@ -2,11 +2,10 @@ import classes from './PriceDetails.module.css';
 import Card from '../ui/Card';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Address } from '@/model/Address';
 
 type Props = {
   cartTotal: number;
-  handleCheckout: (amount: number) => void;
+  handleCheckout?: (amount: number) => void;
 };
 
 export default function PriceDetails({ cartTotal, handleCheckout }: Props) {
@@ -18,7 +17,7 @@ export default function PriceDetails({ cartTotal, handleCheckout }: Props) {
   function onCheckout() {
     if (router.asPath === '/checkout') {
       const confirm = window.confirm('Are you sure you want to proceed?');
-      if (confirm) handleCheckout(grandTotal);
+      if (confirm && handleCheckout) handleCheckout(grandTotal);
     }
   }
 

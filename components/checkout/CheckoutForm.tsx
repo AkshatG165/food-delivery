@@ -7,10 +7,14 @@ import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '@/store/cart-context';
 import { useSession } from 'next-auth/react';
 import logo from '../../public/payment-logo.png';
+import Order from '@/model/Order';
 
 type Props = {
   addresses: AddressModel[];
 };
+
+let redirected = false;
+let checkoutDone = false;
 
 export default function CheckoutForm({ addresses }: Props) {
   const [selectedAddress, setSelectedAddress] = useState<AddressModel>();
@@ -25,7 +29,11 @@ export default function CheckoutForm({ addresses }: Props) {
   if (!selectedAddress) setSelectedAddress(defaultAddress);
 
   useEffect(() => {
-    if (cartCtx.items.length < 1) router.replace('/view-cart');
+    //redirecting to cart if checkout page refreshed
+    if (cartCtx.items.length < 1 && !redirected) {
+      checkoutDone ? router.push('/view-orders') : router.push('/view-cart');
+      redirected = true;
+    }
   }, []);
 
   const cartTotal = cartCtx.items
@@ -44,8 +52,7 @@ export default function CheckoutForm({ addresses }: Props) {
         'Content-type': 'application/json',
       },
     });
-    const order = await res.json();
-    console.log(order);
+    const razorpayOrder = await res.json();
 
     const options = {
       key: 'rzp_test_kh11tJtgOa1wTn',
@@ -53,7 +60,9 @@ export default function CheckoutForm({ addresses }: Props) {
       currency: 'INR',
       name: 'Food Delivery',
       description: 'Test Transaction',
-      order_id: order.id,
+      order_id: razorpayOrder.id,
+
+      //success handler function
       handler: async function (response: any) {
         const res = await fetch('/api/razorpay/validate', {
           method: 'POST',
@@ -66,8 +75,54 @@ export default function CheckoutForm({ addresses }: Props) {
             'Content-type': 'application/json',
           },
         });
-        if (res.ok) console.log(await res.json());
-        else console.log(await res.json());
+        if (!res.ok) return;
+
+        //fetch payment details
+        const paymentRes = await fetch(
+          `/api/razorpay/payments?id=${response.razorpay_payment_id}`
+        );
+        if (!paymentRes.ok) return;
+        const payment = await paymentRes.json();
+
+        //create a new order instance if transaction successful
+        const order = new Order(
+          payment.email,
+          cartCtx.items,
+          selectedAddress!,
+          amount,
+          payment.method,
+          { id: response.razorpay_payment_id, status: payment.status },
+          payment.created_at,
+          false,
+          null
+        );
+
+        //add order to db
+        const orderRes = await fetch('/api/order', {
+          method: 'POST',
+          body: JSON.stringify(order),
+          headers: {
+            'Content-type': 'application/json',
+          },
+        });
+        if (!orderRes.ok) return;
+
+        //reset the cart in frontend
+        const oldCart = [...cartCtx.items];
+        oldCart.forEach((item) => cartCtx.removeItem(item));
+
+        //reset the cart in db
+        const cartRes = await fetch('/api/user/update-cart', {
+          method: 'PATCH',
+          body: JSON.stringify({ cartItems: [] }),
+          headers: {
+            'Content-type': 'application/json',
+          },
+        });
+        if (!cartRes.ok) return;
+
+        checkoutDone = true;
+        router.push('/view-orders');
       },
       prefill: {
         name: selectedAddress?.name,
@@ -82,6 +137,7 @@ export default function CheckoutForm({ addresses }: Props) {
 
     var razorpay = new (window as any).Razorpay(options);
     razorpay.open();
+
     razorpay.on('payment.failed', function (response: any) {
       console.log(
         response.error.code,
@@ -94,6 +150,15 @@ export default function CheckoutForm({ addresses }: Props) {
       );
     });
   }
+
+  // if (isLoading)
+  //   return (
+  //     <>
+  //       <div className={classes['loader-overlay']}>
+  //         <div className={classes.loader}></div>
+  //       </div>
+  //     </>
+  //   );
 
   return (
     <div className={classes['checkout-page']}>

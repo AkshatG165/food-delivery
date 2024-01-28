@@ -5,18 +5,22 @@ import cartIcon from '../../public/cart-icon.png';
 import searchIcon from '../../public/search-icon.png';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import userIcon from '../../public/user.png';
+import arrowIcon from '../../public/arrow.png';
+import Card from '../ui/Card';
 
 type Props = {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function MainNavigation(props: Props) {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.setSearchTerm(e.target.value);
-  async function handleLogout() {
+  async function handleLogout(e: React.MouseEvent) {
+    e.preventDefault();
     await signOut({ redirect: true, callbackUrl: '/' });
   }
 
@@ -45,9 +49,25 @@ export default function MainNavigation(props: Props) {
           </li>
           <li>
             {status === 'authenticated' ? (
-              <button type="button" onClick={handleLogout}>
-                Logout
-              </button>
+              // <button type="button" onClick={handleLogout}>
+              //   <img src={userIcon.src} />
+              //   {session.user?.name?.split(' ')[0]}
+              //   <img src={arrowIcon.src} />
+              // </button>
+              <div className={classes.dropdown}>
+                <button className={classes.dropbtn}>
+                  <img src={userIcon.src} />
+                  {session.user?.name?.split(' ')[0]}
+                  <img src={arrowIcon.src} />
+                </button>
+                <Card className={classes['dropdown-content']}>
+                  <Link href="">Profile</Link>
+                  <Link href="/view-orders">Orders</Link>
+                  <Link href="" onClick={handleLogout}>
+                    Logout
+                  </Link>
+                </Card>
+              </div>
             ) : (
               <Link href="/login">Login</Link>
             )}

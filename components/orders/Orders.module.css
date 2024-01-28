@@ -1,5 +1,5 @@
 .orders {
-  padding: 0.5rem 2rem;
+  padding: 0.1rem 1rem;
   width: 800px;
   margin: auto;
 }
@@ -17,7 +17,7 @@
 .heading {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px dotted gray;
+  border-bottom: 1px solid lightgrey;
   padding: 5px 5px 10px 5px;
 }
 
@@ -26,7 +26,8 @@
 }
 
 .heading img {
-  height: 16px;
+  height: 18px;
+  margin-left: 3px;
 }
 
 .body {
@@ -53,6 +54,6 @@
   margin-left: 10px;
 }
 
-.btn a:hover {
+/* .btn a:hover {
   scale: 1.05;
-}
+} */

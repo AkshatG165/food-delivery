@@ -14,7 +14,9 @@ type Props = {
 
 function getDate(timestamp: number) {
   const date = new Date(timestamp * 1000);
-  return date.toLocaleString();
+  return (
+    date.toLocaleString().substring(0, 15) + date.toLocaleString().substring(18)
+  );
 }
 
 export default function Orders({ orders }: Props) {
@@ -46,17 +48,17 @@ export default function Orders({ orders }: Props) {
             <span>${order.totalPrice.toFixed(2)}</span>
           </div>
           <div className={classes.btn}>
-            <Link href={`/view-orders/${order.id}`}>View Details</Link>
             <Link href={``}>Rate</Link>
+            <Link href={`/view-orders/${order.id}`}>View Details</Link>
           </div>
         </Card>
       </li>
     ));
 
   return (
-    <Card className={classes.orders}>
-      <h2>Orders Page</h2>
+    <div className={classes.orders}>
+      <h2>Orders</h2>
       <ul>{ordersList}</ul>
-    </Card>
+    </div>
   );
 }

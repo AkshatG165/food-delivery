@@ -1,0 +1,57 @@
+.order-details {
+  width: 600px;
+  margin: auto;
+  padding: 0.1rem 1rem;
+}
+
+.order-details h3 {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+.order-details ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.address {
+  padding: 10px 0 5px 0;
+}
+
+.address div {
+  margin: 5px 0;
+}
+
+.bill-details span,
+.left,
+.right {
+  margin: 3px 0;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.total {
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+}
+
+.date-img {
+  border-bottom: 1px solid lightgray;
+  padding: 0.5rem 0;
+}
+
+.date-img span {
+  display: flex;
+}
+
+.date-img img {
+  height: 18px;
+  margin-left: 3px;
+}

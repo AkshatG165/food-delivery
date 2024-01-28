@@ -1,7 +1,7 @@
 import Orders from '@/components/orders/Orders';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]';
+import { authOptions } from '../api/auth/[...nextauth]';
 import { connectToDB, getCollection } from '@/util/db';
 import Order from '@/model/Order';
 

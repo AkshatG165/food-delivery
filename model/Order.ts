@@ -1,27 +1,27 @@
-import { Item } from './Item';
+import { CartItem } from './CartItem';
 import { Address } from './Address';
 
 export default class Order {
   userEmail: string;
-  items: Item[];
-  shippingAddress: Address;
+  items: CartItem[];
+  shippingAddress: Address | undefined;
   totalPrice: number;
   paymentMethod: string;
   paymentResult: { id: string; status: string };
   isDelivered: boolean;
   orderDateTime: Date;
-  deliveredAt: Date;
+  deliveredAt: Date | null;
 
   constructor(
     userEmail: string,
-    items: Item[],
+    items: CartItem[],
     shippingAddress: Address,
     totalPrice: number,
     paymentMethod: string,
-    paymentResult: { id: string; status: string; email: string },
-    isDelivered: boolean,
+    paymentResult: { id: string; status: string },
     orderDateTime: Date,
-    deliveredAt: Date
+    isDelivered: boolean,
+    deliveredAt: Date | null
   ) {
     this.userEmail = userEmail;
     this.items = items;

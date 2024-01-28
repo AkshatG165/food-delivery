@@ -55,6 +55,14 @@ export default function Orders({ orders }: Props) {
       </li>
     ));
 
+  if (orders.length < 1)
+    return (
+      <Card className={classes.empty}>
+        You dont have any orders yet!<br></br>
+        <Link href="/">Order Now</Link>
+      </Card>
+    );
+
   return (
     <div className={classes.orders}>
       <h2>Orders</h2>

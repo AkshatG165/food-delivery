@@ -38,7 +38,7 @@
 }
 
 .loader-overlay {
-  height: 80vh;
+  height: 100vh;
   display: grid;
   place-items: center;
 }

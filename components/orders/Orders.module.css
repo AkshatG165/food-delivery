@@ -1,0 +1,58 @@
+.orders {
+  padding: 0.5rem 2rem;
+  width: 800px;
+  margin: auto;
+}
+
+.orders ul {
+  list-style: none;
+  padding: 0;
+}
+
+.order-item {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dotted gray;
+  padding: 5px 5px 10px 5px;
+}
+
+.heading span {
+  display: flex;
+}
+
+.heading img {
+  height: 16px;
+}
+
+.body {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 5px 5px 5px;
+}
+
+.item {
+  margin-bottom: 5px;
+}
+
+.btn {
+  margin: 30px 5px 10px 0;
+  text-align: end;
+}
+
+.btn a {
+  text-decoration: none;
+  color: black;
+  background-color: #ffc404;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.btn a:hover {
+  scale: 1.05;
+}

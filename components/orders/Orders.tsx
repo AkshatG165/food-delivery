@@ -1,5 +1,8 @@
+import classes from './Orders.module.css';
 import Order from '@/model/Order';
 import Card from '../ui/Card';
+import Link from 'next/link';
+import tick from '../../public/green-tick.jpg';
 
 interface OrderWithID extends Order {
   id: string;
@@ -9,19 +12,51 @@ type Props = {
   orders: OrderWithID[];
 };
 
+function getDate(timestamp: number) {
+  const date = new Date(timestamp * 1000);
+  return date.toLocaleString();
+}
+
 export default function Orders({ orders }: Props) {
-  const ordersList = orders.map((order) => (
-    <li key={order.id}>
-      <Card>
-        <p>{order.id}</p>
-      </Card>
-    </li>
-  ));
+  const ordersList = orders
+    .toSorted((x, y) => {
+      return +y.orderDateTime - +x.orderDateTime;
+    })
+    .map((order) => (
+      <li key={order.id}>
+        <Card className={classes['order-item']}>
+          <div className={classes.heading}>
+            <span>
+              <b>{getDate(+order.orderDateTime)}</b>
+            </span>
+            <span>
+              {order.isDelivered ? 'Delivered' : 'On the way...'}
+              {order.isDelivered && <img src={tick.src} />}
+            </span>
+          </div>
+          <div className={classes.body}>
+            <ul>
+              {order.items.map((item) => (
+                <li key={item.id} className={classes.item}>
+                  <span>{item.name} </span>
+                  <span>({item.quantity})</span>
+                </li>
+              ))}
+            </ul>
+            <span>${order.totalPrice.toFixed(2)}</span>
+          </div>
+          <div className={classes.btn}>
+            <Link href={`/view-orders/${order.id}`}>View Details</Link>
+            <Link href={``}>Rate</Link>
+          </div>
+        </Card>
+      </li>
+    ));
 
   return (
-    <>
-      <h3>Orders Page</h3>
+    <Card className={classes.orders}>
+      <h2>Orders Page</h2>
       <ul>{ordersList}</ul>
-    </>
+    </Card>
   );
 }

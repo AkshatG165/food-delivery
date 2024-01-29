@@ -49,16 +49,15 @@ export default function MainNavigation(props: Props) {
           </li>
           <li>
             {status === 'authenticated' ? (
-              // <button type="button" onClick={handleLogout}>
-              //   <img src={userIcon.src} />
-              //   {session.user?.name?.split(' ')[0]}
-              //   <img src={arrowIcon.src} />
-              // </button>
               <div className={classes.dropdown}>
                 <button className={classes.dropbtn}>
-                  <img src={userIcon.src} />
+                  <img src={userIcon.src} alt="user-icon" />
                   {session.user?.name?.split(' ')[0]}
-                  <img src={arrowIcon.src} />
+                  <img
+                    src={arrowIcon.src}
+                    alt="arrow-icon"
+                    className={classes.arrow}
+                  />
                 </button>
                 <Card className={classes['dropdown-content']}>
                   <Link href="">Profile</Link>

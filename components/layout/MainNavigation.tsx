@@ -60,7 +60,7 @@ export default function MainNavigation(props: Props) {
                   />
                 </button>
                 <Card className={classes['dropdown-content']}>
-                  <Link href="">Profile</Link>
+                  <Link href="/profile">Profile</Link>
                   <Link href="/orders">Orders</Link>
                   <Link href="" onClick={handleLogout}>
                     Logout

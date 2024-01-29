@@ -49,7 +49,7 @@ export default function Orders({ orders }: Props) {
           </div>
           <div className={classes.btn}>
             <Link href={``}>Rate</Link>
-            <Link href={`/view-orders/${order.id}`}>View Details</Link>
+            <Link href={`/orders/${order.id}`}>View Details</Link>
           </div>
         </Card>
       </li>

@@ -31,7 +31,7 @@ export default function CheckoutForm({ addresses }: Props) {
   useEffect(() => {
     //redirecting to cart if checkout page refreshed
     if (cartCtx.items.length < 1 && !redirected) {
-      checkoutDone ? router.push('/view-orders') : router.push('/view-cart');
+      checkoutDone ? router.push('/orders') : router.push('/cart');
       redirected = true;
     }
   }, []);
@@ -122,7 +122,7 @@ export default function CheckoutForm({ addresses }: Props) {
         if (!cartRes.ok) return;
 
         checkoutDone = true;
-        router.push('/view-orders');
+        router.push('/orders');
       },
       prefill: {
         name: selectedAddress?.name,

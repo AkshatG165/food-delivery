@@ -47,7 +47,7 @@ export default function PriceDetails({ cartTotal, handleCheckout }: Props) {
         <span className={classes.value}>{grandTotal.toFixed(2)}</span>
       </div>
       <Link href={`/checkout`} onClick={onCheckout}>
-        {router.asPath === '/view-cart' ? 'Place Order' : 'Checkout'}
+        {router.asPath === '/cart' ? 'Place Order' : 'Checkout'}
       </Link>
     </Card>
   );

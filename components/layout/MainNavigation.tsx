@@ -42,7 +42,7 @@ export default function MainNavigation(props: Props) {
         )}
         <ul className={classes.list}>
           <li>
-            <Link href="/view-cart" className={classes.cart}>
+            <Link href="/cart" className={classes.cart}>
               <img src={cartIcon.src} alt="cart-icon" />
               Cart
             </Link>
@@ -61,7 +61,7 @@ export default function MainNavigation(props: Props) {
                 </button>
                 <Card className={classes['dropdown-content']}>
                   <Link href="">Profile</Link>
-                  <Link href="/view-orders">Orders</Link>
+                  <Link href="/orders">Orders</Link>
                   <Link href="" onClick={handleLogout}>
                     Logout
                   </Link>

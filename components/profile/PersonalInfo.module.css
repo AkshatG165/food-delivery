@@ -1,0 +1,41 @@
+.field {
+  margin: 1rem 0;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.field input {
+  height: 2rem;
+  width: 15rem;
+  font-size: 15px;
+  padding: 5px 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+.field input:focus {
+  background-color: white;
+}
+
+.btn {
+  display: flex;
+  padding-bottom: 0;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn button {
+  width: auto;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  background-color: #ffc404;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  min-width: 5rem;
+  font-size: medium;
+}

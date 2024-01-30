@@ -1,6 +1,5 @@
 .container {
-  width: 800px;
-  height: 70vh;
+  width: 900px;
   margin: auto;
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -28,17 +27,23 @@
   margin-top: 0.5rem;
 }
 
-.options {
-  height: 31vh;
-  padding: 0.5rem 0.75rem;
-}
-
-.options div {
-  padding: 1rem 0.5rem;
+.option {
+  padding: 1rem 1rem;
   border-bottom: 1px solid lightgray;
   font-size: 17px;
 }
 
+.option:hover {
+  scale: 1.02;
+  cursor: pointer;
+  background-color: #ffc404;
+  border-radius: 5px;
+}
+
 .main {
   padding: 0 1.5rem;
+}
+
+.selected {
+  background-color: #ffc404;
 }

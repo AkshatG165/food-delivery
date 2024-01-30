@@ -7,8 +7,8 @@ import AddressForm from '../address/AddressForm';
 
 type Props = {
   addresses: AddressModel[];
-  selectedAddress: AddressModel | undefined;
-  setSelectedAddress: React.Dispatch<
+  selectedAddress?: AddressModel | undefined;
+  setSelectedAddress?: React.Dispatch<
     React.SetStateAction<AddressModel | undefined>
   >;
 };
@@ -27,7 +27,7 @@ export default function Address({
       key={item.id}
       address={item}
       selectedAddress={selectedAddress}
-      setSelectedAddress={setSelectedAddress}
+      setSelectedAddress={setSelectedAddress!}
       editing={editing}
       setEditing={setEditing}
       addNew={addNew}
@@ -54,7 +54,9 @@ export default function Address({
       {addresses.length > 0 || addNew ? (
         <div className={classes.addresses}>
           <div>
-            <h2>Address</h2>
+            <h2>
+              {setSelectedAddress ? 'Select Address' : 'Manage Addresses'}
+            </h2>
             <ul className={classes['address-list']}>
               {addressList}
               {addNew && newAddressForm}

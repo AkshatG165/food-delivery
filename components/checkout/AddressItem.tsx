@@ -5,8 +5,10 @@ import AddressForm from '../address/AddressForm';
 
 type Props = {
   address: Address;
-  selectedAddress: Address | undefined;
-  setSelectedAddress: React.Dispatch<React.SetStateAction<Address | undefined>>;
+  selectedAddress?: Address | undefined;
+  setSelectedAddress?: React.Dispatch<
+    React.SetStateAction<Address | undefined>
+  >;
   editing: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   addNew: boolean;
@@ -26,39 +28,51 @@ export default function AddressItem({
     ? selectedAddress.id === address.id
     : address.isDefault === true;
 
-  const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelect = () => {
     setEditing(false);
     setAddNew(false);
-    setSelectedAddress(address);
+    if (setSelectedAddress) setSelectedAddress(address);
   };
   const handleEdit = () => setEditing(true);
 
   return (
     <li>
       <Card className={classes['list-item']}>
-        <input
-          type="radio"
-          id={address.id}
-          name="address"
-          value={address.id}
-          onChange={handleSelect}
-          checked={isChecked}
-        />
+        {/* hide radios if setSelectedAddress is not present (when using address component in profile section) */}
+        {setSelectedAddress && (
+          <input
+            type="radio"
+            id={address.id}
+            name="address"
+            value={address.id}
+            onChange={handleSelect}
+            checked={isChecked}
+          />
+        )}
         {editing && isChecked ? (
           <AddressForm address={address} setEditing={setEditing} />
         ) : (
-          <label className={classes.label}>
+          <div className={classes.label}>
             <div className={classes.heading}>
               <div>
                 <span>{address.name} - </span>
                 <span>{address.mobile} </span>
                 <span className={classes.title}>{address.title} </span>
               </div>
-              {selectedAddress && isChecked && !addNew && (
-                <button className={classes['edit-btn']} onClick={handleEdit}>
-                  Edit
-                </button>
-              )}
+              <div>
+                {/* show edit button for all if setSelectedAddress is not present (when using address component in profile section) */}
+                {((selectedAddress && isChecked && !addNew) ||
+                  !setSelectedAddress) && (
+                  <button className={classes['edit-btn']} onClick={handleEdit}>
+                    Edit
+                  </button>
+                )}
+                {/* {!setSelectedAddress && (
+                  <button className={classes['edit-btn']} onClick={handleDelete}>
+                    Delete
+                  </button>
+                )} */}
+              </div>
             </div>
             <div className={classes.body}>
               <span>{address.address}, </span>
@@ -66,7 +80,7 @@ export default function AddressItem({
               <span>{address.state} - </span>
               <span>{address.pincode}</span>
             </div>
-          </label>
+          </div>
         )}
       </Card>
     </li>

@@ -2,6 +2,7 @@ import Card from '../ui/Card';
 import classes from './AddressItem.module.css';
 import { Address } from '@/model/Address';
 import AddressForm from '../address/AddressForm';
+import { useRouter } from 'next/router';
 
 type Props = {
   address: Address;
@@ -24,6 +25,7 @@ export default function AddressItem({
   addNew,
   setAddNew,
 }: Props) {
+  const router = useRouter();
   const isChecked = selectedAddress
     ? selectedAddress.id === address.id
     : address.isDefault === true;
@@ -34,6 +36,20 @@ export default function AddressItem({
     if (setSelectedAddress) setSelectedAddress(address);
   };
   const handleEdit = () => setEditing(true);
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this address?'))
+      return;
+
+    const res = await fetch('/api/user/delete-address', {
+      method: 'PATCH',
+      body: JSON.stringify({ id: address.id }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    if (!res.ok) console.log(await res.json());
+    else router.push('');
+  };
 
   return (
     <li>
@@ -67,11 +83,14 @@ export default function AddressItem({
                     Edit
                   </button>
                 )}
-                {/* {!setSelectedAddress && (
-                  <button className={classes['edit-btn']} onClick={handleDelete}>
+                {!setSelectedAddress && (
+                  <button
+                    className={classes['edit-btn']}
+                    onClick={handleDelete}
+                  >
                     Delete
                   </button>
-                )} */}
+                )}
               </div>
             </div>
             <div className={classes.body}>

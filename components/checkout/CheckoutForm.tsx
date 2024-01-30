@@ -125,7 +125,7 @@ export default function CheckoutForm({ addresses }: Props) {
         if (!cartRes.ok) return;
 
         checkoutDone = true;
-        router.push('/orders');
+        //router.push('/orders');
       },
       prefill: {
         name: selectedAddress?.name,

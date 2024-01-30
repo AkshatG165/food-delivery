@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import successIcon from '../public/success.png';
 
 export default function Success() {
@@ -9,7 +10,7 @@ export default function Success() {
         style={{ height: '10rem' }}
       />
       <h1>Payment Successful!</h1>
-      <p>Redirecting...</p>
+      <Link href="/orders">Go to orders</Link>
     </div>
   );
 }

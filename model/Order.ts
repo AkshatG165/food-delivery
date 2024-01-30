@@ -11,6 +11,7 @@ export default class Order {
   isDelivered: boolean;
   orderDateTime: Date;
   deliveredAt: Date | null;
+  id?: string;
 
   constructor(
     userEmail: string,
@@ -21,7 +22,8 @@ export default class Order {
     paymentResult: { id: string; status: string },
     orderDateTime: Date,
     isDelivered: boolean,
-    deliveredAt: Date | null
+    deliveredAt: Date | null,
+    id?: string
   ) {
     this.userEmail = userEmail;
     this.items = items;
@@ -32,5 +34,6 @@ export default class Order {
     this.isDelivered = isDelivered;
     this.orderDateTime = orderDateTime;
     this.deliveredAt = deliveredAt;
+    this.id = id;
   }
 }

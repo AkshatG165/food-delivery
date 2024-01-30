@@ -4,14 +4,6 @@ import Card from '../ui/Card';
 import Link from 'next/link';
 import tick from '../../public/green-tick.jpg';
 
-interface OrderWithID extends Order {
-  id: string;
-}
-
-type Props = {
-  orders: OrderWithID[];
-};
-
 function getDate(timestamp: number) {
   const date = new Date(timestamp * 1000);
   return (
@@ -19,7 +11,7 @@ function getDate(timestamp: number) {
   );
 }
 
-export default function Orders({ orders }: Props) {
+export default function Orders({ orders }: { orders: Order[] }) {
   const ordersList = orders
     .toSorted((x, y) => {
       return +y.orderDateTime - +x.orderDateTime;

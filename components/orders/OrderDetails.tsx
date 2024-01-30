@@ -3,14 +3,6 @@ import Card from '../ui/Card';
 import Order from '@/model/Order';
 import tick from '../../public/green-tick.jpg';
 
-interface OrderWithID extends Order {
-  id: string;
-}
-
-type Props = {
-  order: OrderWithID;
-};
-
 function getDate(timestamp: number) {
   const date = new Date(timestamp * 1000);
   return (
@@ -18,7 +10,7 @@ function getDate(timestamp: number) {
   );
 }
 
-export default function OrderDetails({ order }: Props) {
+export default function OrderDetails({ order }: { order: Order }) {
   const cartTotal = order.items
     .map((item) => item.quantity * item.price)
     .reduce((total, currVal) => total + currVal, 0);

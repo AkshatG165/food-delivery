@@ -6,15 +6,7 @@ import { connectToDB, getCollection } from '@/util/db';
 import Order from '@/model/Order';
 import { ObjectId } from 'mongodb';
 
-interface OrderWithID extends Order {
-  id: string;
-}
-
-type Props = {
-  order: OrderWithID;
-};
-
-export default function ViewOrderDetails({ order }: Props) {
+export default function ViewOrderDetails({ order }: { order: Order }) {
   return <OrderDetails order={order} />;
 }
 

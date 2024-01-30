@@ -1,28 +1,18 @@
 import Orders from '@/components/orders/Orders';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { connectToDB, getCollection } from '@/util/db';
 import Order from '@/model/Order';
 
-interface OrderWithID extends Order {
-  id: string;
-}
-
-type Props = {
-  orders: OrderWithID[];
-};
-
-export default function ViewOrders({ orders }: Props) {
+export default function ViewOrders({ orders }: { orders: Order[] }) {
   return <Orders orders={orders} />;
 }
 
-type Context = {
-  req: NextApiRequest;
-  res: NextApiResponse;
-};
-
-export async function getServerSideProps({ req, res }: Context) {
+export async function getServerSideProps({
+  req,
+  res,
+}: GetServerSidePropsContext) {
   const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
@@ -40,7 +30,7 @@ export async function getServerSideProps({ req, res }: Context) {
     .toArray();
   client.close();
 
-  let orders: OrderWithID[] = [];
+  let orders: Order[] = [];
   result.forEach((order) =>
     orders.push({
       id: order._id.toString(),

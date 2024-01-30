@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import classes from './PersonalInfo.module.css';
 import { useRouter } from 'next/router';
 import { User } from '@/model/User';
@@ -8,19 +8,19 @@ export default function PersonalInfo({ user }: { user: User }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const nameRef = useRef<HTMLInputElement>(null);
 
   const handleEdit = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!editing) setEditing(true);
     else {
-      const fd = new FormData(e.currentTarget);
-      const data = Object.fromEntries(fd.entries());
-
       setIsLoading(true);
       const res = await fetch('/api/user/update-user-info', {
         method: 'PATCH',
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: (nameRef.current as HTMLInputElement).value,
+        }),
         headers: {
           'Content-type': 'application/json',
         },
@@ -30,7 +30,10 @@ export default function PersonalInfo({ user }: { user: User }) {
       else router.push('');
     }
   };
-  const handleCancel = () => setEditing(false);
+  const handleCancel = () => {
+    (nameRef.current as HTMLInputElement).value = user.name;
+    setEditing(false);
+  };
 
   return (
     <form onSubmit={handleEdit}>
@@ -44,6 +47,7 @@ export default function PersonalInfo({ user }: { user: User }) {
           required
           defaultValue={user.name}
           disabled={!editing}
+          ref={nameRef}
         />
       </div>
       <div className={classes.field}>

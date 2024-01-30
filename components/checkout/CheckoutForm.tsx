@@ -77,6 +77,9 @@ export default function CheckoutForm({ addresses }: Props) {
         });
         if (!res.ok) return;
 
+        //redirect to success page after signature validation
+        router.push('/success');
+
         //fetch payment details
         const paymentRes = await fetch(
           `/api/razorpay/payments?id=${response.razorpay_payment_id}`
@@ -150,15 +153,6 @@ export default function CheckoutForm({ addresses }: Props) {
       );
     });
   }
-
-  // if (isLoading)
-  //   return (
-  //     <>
-  //       <div className={classes['loader-overlay']}>
-  //         <div className={classes.loader}></div>
-  //       </div>
-  //     </>
-  //   );
 
   return (
     <div className={classes['checkout-page']}>

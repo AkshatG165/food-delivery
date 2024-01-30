@@ -48,7 +48,7 @@ export default function AddressItem({
       },
     });
     if (!res.ok) console.log(await res.json());
-    else router.push('');
+    else router.push(router.asPath);
   };
 
   return (

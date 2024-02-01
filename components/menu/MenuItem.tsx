@@ -30,7 +30,7 @@ export default function MenuItem({ item, onItemAdd }: Props) {
           }
         />
         <div className={classes.rating}>
-          <p>{item.rating}</p>
+          <p>{item.avgRating!}</p>
           <img src={star.src} alt="rating" />
         </div>
         <img src={item.image} alt={item.name} className={classes['item-img']} />

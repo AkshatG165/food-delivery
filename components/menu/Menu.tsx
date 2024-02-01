@@ -49,7 +49,7 @@ export default function Menu(props: Props) {
       else return true;
     })
     .filter((item) => {
-      if (ratingsFilter) return item.rating >= +ratingsFilter;
+      if (ratingsFilter) return item.avgRating! >= +ratingsFilter;
       else return true;
     })
     .filter((item) =>

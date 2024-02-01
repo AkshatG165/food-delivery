@@ -24,7 +24,7 @@ export async function getStaticProps() {
     description: item.description,
     image: item.image,
     veg: item.veg,
-    rating: item.rating,
+    avgRating: item.avgRating,
   }));
 
   return { props: { items: itemsArr } };

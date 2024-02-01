@@ -1,3 +1,8 @@
+type Rating = {
+  userEmail: string;
+  rating: number;
+};
+
 export class Item {
   id: string;
   name: string;
@@ -5,7 +10,8 @@ export class Item {
   description: string;
   image: string;
   veg: boolean;
-  rating: number;
+  avgRating?: number;
+  ratings?: Rating[];
 
   constructor(
     id: string,
@@ -14,7 +20,8 @@ export class Item {
     description: string,
     image: string,
     veg: boolean,
-    rating: number
+    avgRating?: number,
+    ratings?: Rating[]
   ) {
     this.id = id;
     this.name = name;
@@ -22,6 +29,7 @@ export class Item {
     this.description = description;
     this.image = image;
     this.veg = veg;
-    this.rating = rating;
+    this.avgRating = avgRating;
+    this.ratings = ratings;
   }
 }

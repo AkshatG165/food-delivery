@@ -25,7 +25,7 @@ export default async function handler(
         delete currItem._id;
 
         const rating = {
-          orderID: item.orderId,
+          orderId: item.orderId,
           userEmail: session?.user?.email,
           rating: item.rating,
         };

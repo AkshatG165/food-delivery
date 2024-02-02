@@ -7,7 +7,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'PATCH') {
-    const data: { itemName: string; rating: number }[] = req.body;
+    const data: { orderId: string; itemName: string; rating: number }[] =
+      req.body;
     const session = await getSession(req, res);
 
     if (!data) return res.status(422).json({ message: 'Invalid data' });
@@ -24,6 +25,7 @@ export default async function handler(
         delete currItem._id;
 
         const rating = {
+          orderID: item.orderId,
           userEmail: session?.user?.email,
           rating: item.rating,
         };

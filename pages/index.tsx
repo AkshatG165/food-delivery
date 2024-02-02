@@ -17,15 +17,27 @@ export async function getStaticProps() {
   const result = await getCollection(client, 'items').find().toArray();
   client.close();
 
-  const itemsArr = result.map((item) => ({
-    id: item._id.toString(),
-    name: item.name,
-    price: item.price,
-    description: item.description,
-    image: item.image,
-    veg: item.veg,
-    avgRating: item.avgRating,
-  }));
+  const itemsArr = result.map((item) => {
+    if (item.avgRating)
+      return {
+        id: item._id.toString(),
+        name: item.name,
+        price: item.price,
+        description: item.description,
+        image: item.image,
+        veg: item.veg,
+        avgRating: item.avgRating,
+      };
+    else
+      return {
+        id: item._id.toString(),
+        name: item.name,
+        price: item.price,
+        description: item.description,
+        image: item.image,
+        veg: item.veg,
+      };
+  });
 
   return { props: { items: itemsArr } };
 }

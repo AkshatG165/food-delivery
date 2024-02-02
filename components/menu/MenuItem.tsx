@@ -29,10 +29,12 @@ export default function MenuItem({ item, onItemAdd }: Props) {
             item.veg === true ? `${classes.dot} ${classes.green}` : classes.dot
           }
         />
-        <div className={classes.rating}>
-          <p>{item.avgRating!.toFixed(2)}</p>
-          <img src={star.src} alt="rating" />
-        </div>
+        {item.avgRating && (
+          <div className={classes.rating}>
+            <p>{item.avgRating!.toFixed(2)}</p>
+            <img src={star.src} alt="rating" />
+          </div>
+        )}
         <img src={item.image} alt={item.name} className={classes['item-img']} />
         <h3>{item.name}</h3>
         <p className={classes['item-price']}>${item.price}</p>

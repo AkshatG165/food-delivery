@@ -1,4 +1,5 @@
 type Rating = {
+  orderId: string;
   userEmail: string;
   rating: number;
 };

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import PriceDetails from './PriceDetails';
 import { CartItem as CartItemModel } from '@/model/CartItem';
 import { useSession } from 'next-auth/react';
+import LoadingUI from '../ui/LoadingUI';
 
 let dataUpdated = false;
 let cartItem: CartItemModel | undefined;
@@ -80,14 +81,7 @@ export default function Cart() {
     .map((item) => item.quantity * item.price)
     .reduce((total, currVal) => total + currVal, 0);
 
-  if (isLoading)
-    return (
-      <>
-        <div className={classes['loader-overlay']}>
-          <div className={classes.loader}></div>
-        </div>
-      </>
-    );
+  if (isLoading) return <LoadingUI />;
 
   return cartCtx.items.length === 0 ? (
     <Card className={classes.empty}>

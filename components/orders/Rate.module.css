@@ -26,3 +26,12 @@
   font-size: medium;
   margin-left: 1rem;
 }
+
+.modal {
+  position: relative;
+  width: 600px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

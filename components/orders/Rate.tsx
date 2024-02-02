@@ -4,11 +4,13 @@ import classes from './Rate.module.css';
 import Order from '@/model/Order';
 import { useEffect, useState } from 'react';
 import { Item } from '@/model/Item';
+import LoadingUI from '../ui/LoadingUI';
 
 type Props = {
   order: Order;
   setShowRate: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
 type Rating = {
   orderId: string;
   itemName: string;
@@ -17,11 +19,8 @@ type Rating = {
 
 export default function Rate({ order, setShowRate }: Props) {
   const [oldRatings, setOldRatings] = useState<Rating[]>([]);
-  const ratings: Rating[] = order.items.map((item) => ({
-    orderId: order.id!,
-    itemName: item.name,
-    rating: 0,
-  }));
+  const [isLoding, setIsLoading] = useState(false);
+  const ratings = [...oldRatings];
 
   const handleCancel = () => setShowRate(false);
   const handleRating = (itemName: string, newRating: number) => {
@@ -35,6 +34,7 @@ export default function Rate({ order, setShowRate }: Props) {
         ? '/api/item/update-rating'
         : '/api/item/add-rating';
 
+    setIsLoading(true);
     const res = await fetch(url, {
       method: 'PATCH',
       body: JSON.stringify(ratings),
@@ -43,11 +43,13 @@ export default function Rate({ order, setShowRate }: Props) {
       },
     });
     if (!res.ok) return;
+    setIsLoading(false);
     setShowRate(false);
   };
 
   useEffect(() => {
     const fetchRatings = async () => {
+      setIsLoading(true);
       const res = await fetch(`/api/item?orderId=${order.id}`);
       if (!res.ok) return;
       const items = (await res.json()).result;
@@ -68,6 +70,7 @@ export default function Rate({ order, setShowRate }: Props) {
           });
         });
       }
+      setIsLoading(false);
     };
     fetchRatings();
   }, []);
@@ -92,8 +95,16 @@ export default function Rate({ order, setShowRate }: Props) {
     </li>
   ));
 
+  if (isLoding) {
+    return (
+      <Modal className={classes.modal}>
+        <LoadingUI />
+      </Modal>
+    );
+  }
+
   return (
-    <Modal>
+    <Modal className={classes.modal}>
       <ul>{rateItems}</ul>
       <div className={classes.btns}>
         <button type="button" onClick={handleCancel}>

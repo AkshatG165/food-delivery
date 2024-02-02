@@ -50,9 +50,11 @@ export default function Orders({ orders }: { orders: Order[] }) {
             <span>${order.totalPrice.toFixed(2)}</span>
           </div>
           <div className={classes.btn}>
-            <button type="button" onClick={() => handleRating(order)}>
-              Rate
-            </button>
+            {order.isDelivered && (
+              <button type="button" onClick={() => handleRating(order)}>
+                Rate
+              </button>
+            )}
             <Link href={`/orders/${order.id}`}>View Details</Link>
           </div>
         </Card>

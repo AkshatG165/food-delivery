@@ -1,9 +1,11 @@
 import classes from './Modal.module.css';
 
-export default function Modal({ children }: { children: React.ReactNode }) {
+type Props = { children: React.ReactNode; className?: string };
+
+export default function Modal({ children, className }: Props) {
   return (
     <div className={classes.backdrop}>
-      <div className={classes.modal}>{children}</div>
+      <div className={classes.modal + ' ' + className}>{children}</div>
     </div>
   );
 }

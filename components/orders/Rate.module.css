@@ -1,0 +1,28 @@
+.rate-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.name {
+  padding-top: 6px;
+  text-align: end;
+  font-size: 24px;
+}
+
+.btns {
+  text-align: center;
+  padding-bottom: 0;
+  margin-top: 1.5rem;
+}
+
+.btns button {
+  background-color: #ffc404;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  min-width: 5rem;
+  font-size: medium;
+  margin-left: 1rem;
+}

@@ -3,6 +3,8 @@ import Order from '@/model/Order';
 import Card from '../ui/Card';
 import Link from 'next/link';
 import tick from '../../public/green-tick.jpg';
+import { useState } from 'react';
+import Rate from './Rate';
 
 function getDate(timestamp: number) {
   const date = new Date(timestamp * 1000);
@@ -12,6 +14,14 @@ function getDate(timestamp: number) {
 }
 
 export default function Orders({ orders }: { orders: Order[] }) {
+  const [showRate, setShowRate] = useState(false);
+  const [currOrder, setCurrOrder] = useState<Order>();
+
+  const handleRating = (order: Order) => {
+    setCurrOrder(order);
+    setShowRate(true);
+  };
+
   const ordersList = orders
     .toSorted((x, y) => {
       return +y.orderDateTime - +x.orderDateTime;
@@ -40,7 +50,9 @@ export default function Orders({ orders }: { orders: Order[] }) {
             <span>${order.totalPrice.toFixed(2)}</span>
           </div>
           <div className={classes.btn}>
-            <Link href={``}>Rate</Link>
+            <button type="button" onClick={() => handleRating(order)}>
+              Rate
+            </button>
             <Link href={`/orders/${order.id}`}>View Details</Link>
           </div>
         </Card>
@@ -57,6 +69,7 @@ export default function Orders({ orders }: { orders: Order[] }) {
 
   return (
     <div className={classes.orders}>
+      {showRate && <Rate order={currOrder!} setShowRate={setShowRate} />}
       <h2>Orders</h2>
       <ul>{ordersList}</ul>
     </div>

@@ -1,6 +1,6 @@
-import classes from './Loader.module.css';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import LoadingUI from './LoadingUI';
 
 type Props = {
   children: React.ReactNode;
@@ -25,16 +25,5 @@ export default function Loader({ children }: Props) {
     };
   }, [router]);
 
-  return loading ? (
-    <>
-      <div className={classes.content}>
-        <div className={classes.overlay}>
-          <div className={classes.loader}></div>
-        </div>
-        <div>{children}</div>
-      </div>
-    </>
-  ) : (
-    children
-  );
+  return loading ? <LoadingUI>{children}</LoadingUI> : children;
 }

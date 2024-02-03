@@ -69,7 +69,7 @@ export default function LoginForm() {
       <div className={classes.left}>
         {query && query.signup === 'true' ? (
           <div>
-            <h3>Looks like you're new here!</h3>
+            <h3>{"Looks like you're new here!"}</h3>
             <p>Sign up with your email to get started.</p>
           </div>
         ) : (
@@ -128,7 +128,7 @@ export default function LoginForm() {
           </p>
         ) : (
           <p>
-            Don't have an account yet?
+            {"Don't have an account yet?"}
             <Link href="/login?signup=true">Register</Link>
           </p>
         )}

@@ -6,14 +6,13 @@ import { useRouter } from 'next/router';
 
 type Props = {
   address: Address;
-  selectedAddress?: Address | undefined;
-  setSelectedAddress?: React.Dispatch<
-    React.SetStateAction<Address | undefined>
-  >;
+  selectedAddress: Address | undefined;
+  setSelectedAddress: React.Dispatch<React.SetStateAction<Address | undefined>>;
   editing: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   addNew: boolean;
   setAddNew: React.Dispatch<React.SetStateAction<boolean>>;
+  inProfile?: boolean;
 };
 
 export default function AddressItem({
@@ -24,6 +23,7 @@ export default function AddressItem({
   setEditing,
   addNew,
   setAddNew,
+  inProfile,
 }: Props) {
   const router = useRouter();
   const isChecked = selectedAddress
@@ -33,9 +33,12 @@ export default function AddressItem({
   const handleSelect = () => {
     setEditing(false);
     setAddNew(false);
-    if (setSelectedAddress) setSelectedAddress(address);
+    setSelectedAddress(address);
   };
-  const handleEdit = () => setEditing(true);
+  const handleEdit = () => {
+    setSelectedAddress(address);
+    setEditing(true);
+  };
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this address?'))
       return;
@@ -55,7 +58,7 @@ export default function AddressItem({
     <li>
       <Card className={classes['list-item']}>
         {/* hide radios if setSelectedAddress is not present (when using address component in profile section) */}
-        {setSelectedAddress && (
+        {!inProfile && (
           <input
             type="radio"
             id={address.id}
@@ -77,13 +80,12 @@ export default function AddressItem({
               </div>
               <div>
                 {/* show edit button for all if setSelectedAddress is not present (when using address component in profile section) */}
-                {((selectedAddress && isChecked && !addNew) ||
-                  !setSelectedAddress) && (
+                {((selectedAddress && isChecked && !addNew) || inProfile) && (
                   <button className={classes['edit-btn']} onClick={handleEdit}>
                     Edit
                   </button>
                 )}
-                {!setSelectedAddress && (
+                {inProfile && (
                   <button
                     className={classes['edit-btn']}
                     onClick={handleDelete}

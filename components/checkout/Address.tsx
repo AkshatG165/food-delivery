@@ -7,16 +7,18 @@ import AddressForm from '../address/AddressForm';
 
 type Props = {
   addresses: AddressModel[];
-  selectedAddress?: AddressModel | undefined;
-  setSelectedAddress?: React.Dispatch<
+  selectedAddress: AddressModel | undefined;
+  setSelectedAddress: React.Dispatch<
     React.SetStateAction<AddressModel | undefined>
   >;
+  inProfile?: boolean;
 };
 
 export default function Address({
   addresses,
   selectedAddress,
   setSelectedAddress,
+  inProfile,
 }: Props) {
   //setting initial state to the address where isDefault is true
   const [editing, setEditing] = useState(false);
@@ -32,6 +34,7 @@ export default function Address({
       setEditing={setEditing}
       addNew={addNew}
       setAddNew={setAddNew}
+      inProfile={inProfile}
     />
   ));
 
@@ -54,9 +57,7 @@ export default function Address({
       {addresses.length > 0 || addNew ? (
         <div className={classes.addresses}>
           <div>
-            <h2>
-              {setSelectedAddress ? 'Select Address' : 'Manage Addresses'}
-            </h2>
+            <h2>{inProfile ? 'Manage Addresses' : 'Select Address'}</h2>
             <ul className={classes['address-list']}>
               {addressList}
               {addNew && newAddressForm}

@@ -5,8 +5,11 @@ import PersonalInfo from './PersonalInfo';
 import { User } from '@/model/User';
 import Address from '../checkout/Address';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { Address as AddressModel } from '@/model/Address';
 
 export default function Profile({ user }: { user: User }) {
+  const [selectedAddress, setSelectedAddress] = useState<AddressModel>();
   const router = useRouter();
   let content = router.query.content ? router.query.content : 'user-info';
 
@@ -55,7 +58,14 @@ export default function Profile({ user }: { user: User }) {
           <PersonalInfo user={user} />
         </Card>
       )}
-      {content === 'manage-addresses' && <Address addresses={user.addresses} />}
+      {content === 'manage-addresses' && (
+        <Address
+          addresses={user.addresses}
+          selectedAddress={selectedAddress}
+          setSelectedAddress={setSelectedAddress}
+          inProfile={true}
+        />
+      )}
     </div>
   );
 }

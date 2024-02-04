@@ -3,13 +3,7 @@ import Card from '../ui/Card';
 import Order from '@/model/Order';
 import tick from '../../public/green-tick.jpg';
 import Link from 'next/link';
-
-function getDate(timestamp: number) {
-  const date = new Date(timestamp * 1000);
-  return (
-    date.toLocaleString().substring(0, 15) + date.toLocaleString().substring(18)
-  );
-}
+import { getDate } from '@/util/helper';
 
 export default function OrderDetails({ order }: { order: Order }) {
   const cartTotal = order.items

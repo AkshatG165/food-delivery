@@ -2,36 +2,22 @@ import classes from './LoginForm.module.css';
 import Card from '../ui/Card';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>();
-  const name = useRef<HTMLInputElement>(null);
-  const email = useRef<HTMLInputElement>(null);
-  const password = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const query = router.query;
   const [isLoading, setIsLoading] = useState(false);
   const { status } = useSession();
 
-  useEffect(() => {
-    if (name.current) name.current.value = '';
-    if (email.current) email.current.value = '';
-    if (password && password.current) password.current.value = '';
-    setError(null);
-  }, [query.signup]);
-
-  const handleOnSubmit = async (e: React.FormEvent) => {
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const data = { ...Object.fromEntries(fd.entries()) };
 
     if (query && query.signup === 'true') {
-      const data = {
-        name: name.current ? name.current.value : '',
-        email: email.current ? email.current.value : '',
-        password: password.current ? password.current.value : '',
-      };
-
       setIsLoading(true);
       const res = await fetch('/api/user', {
         method: 'POST',
@@ -43,24 +29,14 @@ export default function LoginForm() {
       setIsLoading(false);
 
       if (!res.ok) setError((await res.json()).message);
-      else {
-        setError(null);
-        router.replace('/login');
-      }
+      else router.replace('/login');
     } else {
       setIsLoading(true);
-      const res = await signIn('credentials', {
-        email: email.current ? email.current.value : '',
-        password: password.current ? password.current.value : '',
-        redirect: false,
-      });
+      const res = await signIn('credentials', { ...data, redirect: false });
       setIsLoading(false);
 
       if (res && !res.ok) setError(res.error);
-      else {
-        setError(null);
-        router.replace('/');
-      }
+      else router.replace('/');
     }
   };
 
@@ -88,7 +64,6 @@ export default function LoginForm() {
               name="name"
               placeholder="Enter name"
               required
-              ref={name}
             />
           )}
           <input
@@ -97,7 +72,6 @@ export default function LoginForm() {
             name="email"
             placeholder="Enter Email"
             required
-            ref={email}
           />
           <input
             id="password"
@@ -105,7 +79,6 @@ export default function LoginForm() {
             name="password"
             placeholder="Password"
             required
-            ref={password}
           />
           <button
             type="submit"

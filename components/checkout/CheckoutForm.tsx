@@ -14,7 +14,6 @@ type Props = {
 };
 
 let redirected = false;
-let checkoutDone = false;
 
 export default function CheckoutForm({ addresses }: Props) {
   const [selectedAddress, setSelectedAddress] = useState<AddressModel>();
@@ -31,7 +30,7 @@ export default function CheckoutForm({ addresses }: Props) {
   useEffect(() => {
     //redirecting to cart if checkout page refreshed
     if (cartCtx.items.length < 1 && !redirected) {
-      checkoutDone ? router.push('/orders') : router.push('/cart');
+      router.push('/cart');
       redirected = true;
     }
   }, []);
@@ -124,8 +123,16 @@ export default function CheckoutForm({ addresses }: Props) {
         });
         if (!cartRes.ok) return;
 
-        checkoutDone = true;
-        //router.push('/orders');
+        //setting timeout for updating delivery status to delivered
+        setTimeout(async () => {
+          const res = await fetch('/api/order/update-delivery-status', {
+            method: 'PATCH',
+            body: JSON.stringify(order),
+            headers: {
+              'Content-type': 'application/json',
+            },
+          });
+        }, 120000);
       },
       prefill: {
         name: selectedAddress?.name,

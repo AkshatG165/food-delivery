@@ -1,4 +1,13 @@
 .order-details {
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.card {
   width: 600px;
   margin: auto;
   padding: 0.1rem 1rem;
@@ -54,4 +63,13 @@
 .date-img img {
   height: 18px;
   margin-left: 3px;
+}
+
+.order-details a {
+  text-decoration: none;
+  color: black;
+  background-color: #ffc404;
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 10px;
 }

@@ -12,10 +12,14 @@ export default async function handler(
 
     try {
       const client = await connectToDB();
-      const userCollection = getCollection(client, 'orders');
+      const ordersCollection = getCollection(client, 'orders');
 
       //creating new order
-      const result = await userCollection.insertOne(order);
+      const result = await ordersCollection.insertOne(order);
+      if (!result.insertedId)
+        return res
+          .status(500)
+          .json({ message: 'Unable to add order to database' });
       client.close();
 
       return res.status(201).json({

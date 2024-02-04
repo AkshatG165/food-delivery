@@ -30,10 +30,21 @@ export default function OrderDetails({ order }: { order: Order }) {
       <Card className={classes.card}>
         <h3>Order Details</h3>
         <div className={classes.item + ' ' + classes['date-img']}>
-          <span>{getDate(+order.orderDateTime)}</span>
+          <div>
+            <span>Order date - {getDate(+order.orderDateTime)}</span>
+            {order.deliveredAt && (
+              <span className={classes['delivery-date']}>
+                Delivered at - {getDate(+order.deliveredAt)}
+              </span>
+            )}
+          </div>
           <span>
-            {order.isDelivered ? 'Delivered' : 'On the way...'}
-            {order.isDelivered && <img src={tick.src} />}
+            {order.isDelivered && (
+              <>
+                Delivered
+                <img src={tick.src} />
+              </>
+            )}
           </span>
         </div>
         <div className={classes.address}>
@@ -72,6 +83,11 @@ export default function OrderDetails({ order }: { order: Order }) {
             <span>Total Paid via {order.paymentMethod}</span>
             <span>${order.totalPrice.toFixed(2)}</span>
           </b>
+          {!order.isDelivered && (
+            <div className={classes['last-item']}>
+              Your order is on the way, will be delivered in 2 mins...
+            </div>
+          )}
         </div>
       </Card>
       <Link href="/orders">Back</Link>

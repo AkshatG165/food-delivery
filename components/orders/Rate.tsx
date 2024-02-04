@@ -24,9 +24,16 @@ export default function Rate({ order, setShowRate }: Props) {
 
   const handleCancel = () => setShowRate(false);
   const handleRating = (itemName: string, newRating: number) => {
-    ratings.forEach((rating) => {
-      if (rating.itemName === itemName) rating.rating = newRating;
-    });
+    if (oldRatings.length < 1)
+      ratings.push({
+        orderId: order.id!,
+        itemName: itemName,
+        rating: newRating,
+      });
+    else
+      ratings.forEach((rating) => {
+        if (rating.itemName === itemName) rating.rating = newRating;
+      });
   };
   const handleSubmit = async () => {
     const url =

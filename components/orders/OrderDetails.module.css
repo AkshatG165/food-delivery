@@ -73,3 +73,11 @@
   padding: 10px;
   margin-right: 10px;
 }
+
+.delivery-date {
+  margin-top: 5px;
+}
+
+.last-item {
+  margin-bottom: 1rem;
+}

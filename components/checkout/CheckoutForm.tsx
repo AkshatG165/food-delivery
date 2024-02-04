@@ -142,14 +142,8 @@ export default function CheckoutForm({ addresses }: Props) {
     razorpay.open();
 
     razorpay.on('payment.failed', function (response: any) {
-      console.log(
-        response.error.code,
-        response.error.description,
-        response.error.source,
-        response.error.step,
-        response.error.reason,
-        response.error.metadata.order_id,
-        response.error.metadata.payment_id
+      alert(
+        `${response.error.description} \n\nOrder ID - ${response.error.metadata.order_id}\nPayment ID - ${response.error.metadata.payment_id}`
       );
     });
   }

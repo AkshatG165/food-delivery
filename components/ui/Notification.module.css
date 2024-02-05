@@ -1,0 +1,55 @@
+.backdrop {
+  position: fixed;
+  z-index: 1;
+  bottom: 5%;
+}
+
+.notification {
+  position: relative;
+  z-index: 2;
+  padding: 1rem;
+  width: 20rem;
+  text-align: center;
+  font-size: 17px;
+  animation: fade-slide-up 0.3s ease-out forwards;
+}
+
+.success {
+  background-color: #1bc27a;
+}
+
+.failure {
+  background-color: #e84335;
+}
+
+.notification button {
+  position: absolute;
+  background-color: inherit;
+  padding: 0;
+  border: 1px solid black;
+  border-radius: 3px;
+  width: 17px;
+  right: 7px;
+  top: 7px;
+}
+
+.notification progress[value] {
+  position: absolute;
+  margin: 0;
+  border: none;
+  left: 0%;
+  left: 0%;
+  bottom: 0%;
+  width: 22rem;
+  height: 7px;
+}
+
+.notification progress[value]::-webkit-progress-bar {
+  background-color: inherit;
+  border-radius: 2px;
+}
+
+.notification progress[value]::-webkit-progress-value {
+  background-color: rgb(224, 224, 224);
+  border-radius: 0 2px 2px 2px;
+}

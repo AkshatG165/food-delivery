@@ -101,7 +101,7 @@ export default function CheckoutForm({ addresses }: Props) {
         );
 
         //add order to db
-        const orderRes = await fetch('/api/order', {
+        const orderRes = await fetch('/api/orders', {
           method: 'POST',
           body: JSON.stringify(order),
           headers: {
@@ -126,7 +126,7 @@ export default function CheckoutForm({ addresses }: Props) {
 
         //setting timeout for updating delivery status to delivered
         setTimeout(async () => {
-          const res = await fetch('/api/order/update-delivery-status', {
+          const res = await fetch('/api/orders/update-delivery-status', {
             method: 'PATCH',
             body: JSON.stringify(order),
             headers: {

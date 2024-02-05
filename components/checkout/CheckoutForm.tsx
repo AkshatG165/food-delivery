@@ -25,7 +25,8 @@ export default function CheckoutForm({ addresses }: Props) {
   if (addresses.length > 0)
     defaultAddress = addresses.find((item) => item.isDefault) || addresses[0];
 
-  if (!selectedAddress) setSelectedAddress(defaultAddress);
+  if (!selectedAddress && addresses.length > 0)
+    setSelectedAddress(defaultAddress);
 
   useEffect(() => {
     //redirecting to cart if checkout page refreshed

@@ -9,6 +9,7 @@
   height: 100%;
   display: grid;
   place-items: center;
+  border-radius: 5px;
 }
 
 .loader {

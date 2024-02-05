@@ -89,7 +89,7 @@ export default function CheckoutForm({ addresses }: Props) {
 
         //create a new order instance if transaction successful
         const order = new Order(
-          payment.email,
+          session?.user?.email!,
           cartCtx.items,
           selectedAddress!,
           amount,

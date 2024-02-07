@@ -9,7 +9,7 @@ import { CartItem as CartItemModel } from '@/model/CartItem';
 import { useSession } from 'next-auth/react';
 import LoadingUI from '../ui/LoadingUI';
 
-let dataUpdated = false;
+let dataRetrieved = false;
 let cartItem: CartItemModel | undefined;
 
 export default function Cart() {
@@ -17,6 +17,28 @@ export default function Cart() {
   const cartCtx = useContext(CartContext);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  //for retreving data
+  useEffect(() => {
+    const getCartItems = async () => {
+      const res = await fetch(`/api/user?email=${session?.user?.email}`);
+      if (!res.ok)
+        setError(
+          'Unable to fetch cart items, please try again after some time'
+        );
+      else {
+        const cartItems: CartItemModel[] = (await res.json()).result[0]
+          .cartItems;
+        if (cartItems.length > 0 && !dataRetrieved) {
+          cartItems.forEach((item) => cartCtx.addItem(item));
+          dataRetrieved = true;
+        }
+      }
+      setIsLoading(false);
+    };
+    if (!dataRetrieved) getCartItems();
+    else setIsLoading(false);
+  }, []);
 
   //for updating data
   useEffect(() => {
@@ -36,30 +58,6 @@ export default function Cart() {
     if (cartItem) updateItemsInDB();
     cartItem = undefined;
   }, [cartCtx.items]);
-
-  //for retreving data
-  useEffect(() => {
-    const getCartItems = async () => {
-      const res = await fetch(
-        `/api/user?email=${session && session.user ? session?.user.email : ''}`
-      );
-      if (!res.ok)
-        setError(
-          'Unable to fetch cart items, please try again after some time'
-        );
-      else {
-        const cartItems: CartItemModel[] = (await res.json()).result[0]
-          .cartItems;
-        if (cartItems.length > 0 && !dataUpdated) {
-          cartItems.forEach((item) => cartCtx.addItem(item));
-          dataUpdated = true;
-        }
-      }
-      setIsLoading(false);
-    };
-    if (!dataUpdated) getCartItems();
-    else setIsLoading(false);
-  }, []);
 
   function onItemAdd(item: CartItemModel) {
     cartItem = item;

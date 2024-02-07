@@ -6,39 +6,12 @@ import { CartContext } from '@/store/cart-context';
 import Link from 'next/link';
 import PriceDetails from './PriceDetails';
 import { CartItem as CartItemModel } from '@/model/CartItem';
-import { useSession } from 'next-auth/react';
-import LoadingUI from '../ui/LoadingUI';
 
-let dataRetrieved = false;
 let cartItem: CartItemModel | undefined;
 
 export default function Cart() {
-  const { data: session } = useSession();
   const cartCtx = useContext(CartContext);
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-
-  //for retreving data
-  useEffect(() => {
-    const getCartItems = async () => {
-      const res = await fetch(`/api/user?email=${session?.user?.email}`);
-      if (!res.ok)
-        setError(
-          'Unable to fetch cart items, please try again after some time'
-        );
-      else {
-        const cartItems: CartItemModel[] = (await res.json()).result[0]
-          .cartItems;
-        if (cartItems.length > 0 && !dataRetrieved) {
-          cartItems.forEach((item) => cartCtx.addItem(item));
-          dataRetrieved = true;
-        }
-      }
-      setIsLoading(false);
-    };
-    if (!dataRetrieved) getCartItems();
-    else setIsLoading(false);
-  }, []);
 
   //for updating data
   useEffect(() => {
@@ -78,8 +51,6 @@ export default function Cart() {
   const cartTotal = cartCtx.items
     .map((item) => item.quantity * item.price)
     .reduce((total, currVal) => total + currVal, 0);
-
-  if (isLoading) return <LoadingUI />;
 
   return cartCtx.items.length === 0 ? (
     <Card className={classes.empty}>

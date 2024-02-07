@@ -85,7 +85,7 @@ export default function OrderDetails({ order }: { order: Order }) {
           </b>
           {!order.isDelivered && (
             <div className={classes['last-item']}>
-              Your order is on the way, will be delivered in 2 mins...
+              Your order is on the way, will be delivered soon...
             </div>
           )}
         </div>

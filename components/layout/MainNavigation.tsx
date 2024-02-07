@@ -8,14 +8,28 @@ import { useRouter } from 'next/router';
 import userIcon from '../../public/user.png';
 import arrowIcon from '../../public/arrow.png';
 import Card from '../ui/Card';
+import { useContext, useEffect, useState } from 'react';
+import { CartContext } from '@/store/cart-context';
 
 type Props = {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function MainNavigation(props: Props) {
+  const [runEffect, setRunEffect] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const cartCtx = useContext(CartContext);
+
+  useEffect(() => {
+    if (cartCtx.items.length === 0) return;
+    setRunEffect(true);
+    const timer = setTimeout(() => setRunEffect(false), 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [cartCtx.items]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.setSearchTerm(e.target.value);
@@ -41,10 +55,21 @@ export default function MainNavigation(props: Props) {
           </form>
         )}
         <ul className={classes.list}>
-          <li>
-            <Link href="/cart" className={classes.cart}>
+          <li className={classes.cart}>
+            <Link href="/cart">
               <img src={cartIcon.src} alt="cart-icon" />
               Cart
+              {cartCtx.items.length > 0 && (
+                <div
+                  className={`${classes['total-quantity']} ${
+                    runEffect ? classes.pop : ''
+                  }`}
+                >
+                  {cartCtx.items
+                    .map((item) => item.quantity)
+                    .reduce((total, currVal) => total + currVal, 0)}
+                </div>
+              )}
             </Link>
           </li>
           <li>

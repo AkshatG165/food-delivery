@@ -7,11 +7,20 @@ import Link from 'next/link';
 import PriceDetails from './PriceDetails';
 import { CartItem as CartItemModel } from '@/model/CartItem';
 
+let dataRetrieved = false;
 let cartItem: CartItemModel | undefined;
 
-export default function Cart() {
+export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
   const cartCtx = useContext(CartContext);
   const [error, setError] = useState('');
+
+  //initializing cart context
+  useEffect(() => {
+    if (cartCtx.items.length < 1 && cartItems?.length > 0 && !dataRetrieved) {
+      cartItems.forEach((item) => cartCtx.addItem(item));
+      dataRetrieved = true;
+    }
+  }, []);
 
   //for updating data
   useEffect(() => {
@@ -42,7 +51,7 @@ export default function Cart() {
     cartCtx.removeItem(item);
   }
 
-  const cartItems = cartCtx.items.map((item) => (
+  const renderCartItems = cartCtx.items.map((item) => (
     <li key={item.id}>
       <CartItem item={item} onItemAdd={onItemAdd} onItemRemove={onItemRemove} />
     </li>
@@ -61,7 +70,7 @@ export default function Cart() {
     <div className={classes['cart-whole']}>
       <Card className={classes['item-details']}>
         <h2>Your Cart</h2>
-        <ul className={classes['cart-list']}>{cartItems}</ul>
+        <ul className={classes['cart-list']}>{renderCartItems}</ul>
       </Card>
       <PriceDetails cartTotal={cartTotal} />
     </div>

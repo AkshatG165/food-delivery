@@ -49,6 +49,18 @@ export default async function handler(
         { 'addresses.id': id },
         { $set: { 'addresses.$': updatedAddres } }
       );
+
+      //if default set to true, for all other addresses set default to false
+      if (isDefault) {
+        const dbRes = await userCollection.updateMany(
+          { 'addresses.id': id },
+          { $set: { 'addresses.$[x].isDefault': false } },
+          { arrayFilters: [{ 'x.id': { $nin: [id] } }] }
+        );
+
+        if (dbRes.modifiedCount !== 1 && dbRes.matchedCount !== 1)
+          return res.status(500).json({ message: 'Unable to update address' });
+      }
       client.close();
 
       if (dbRes.modifiedCount !== 1 && dbRes.matchedCount !== 1)

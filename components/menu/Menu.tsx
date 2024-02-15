@@ -32,7 +32,11 @@ export default function Menu(props: Props) {
         );
       else {
         const cartItems: CartItem[] = (await res.json()).result[0]?.cartItems;
-        if (cartItems?.length > 0 && !dataRetrieved) {
+        if (
+          cartCtx.items.length < 1 &&
+          cartItems?.length > 0 &&
+          !dataRetrieved
+        ) {
           cartItems.forEach((item) => cartCtx.addItem(item));
           dataRetrieved = true;
         }

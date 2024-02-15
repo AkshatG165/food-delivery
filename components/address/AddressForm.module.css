@@ -42,6 +42,13 @@
   background-color: white;
 }
 
+.isDefault {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
 .btns {
   display: flex;
   justify-content: flex-end;

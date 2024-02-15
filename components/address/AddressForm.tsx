@@ -27,7 +27,7 @@ export default function AddressForm({
     const data = {
       ...Object.fromEntries(fd.entries()),
       id: address?.id,
-      isDefault: address?.isDefault,
+      isDefault: Object.fromEntries(fd.entries()).isDefault ? true : false,
       location: address?.location,
     };
 
@@ -134,6 +134,15 @@ export default function AddressForm({
             defaultValue={address?.state}
           />
         </div>
+      </div>
+      <div className={classes.isDefault}>
+        <input
+          id="isDefault"
+          type="checkbox"
+          name="isDefault"
+          defaultChecked={address?.isDefault}
+        />
+        <label>Mark as default</label>
       </div>
       <div className={classes['btns']}>
         <button disabled={isLoading}>{isLoading ? 'Saving..' : 'Save'}</button>

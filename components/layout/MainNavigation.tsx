@@ -40,7 +40,12 @@ export default function MainNavigation(props: Props) {
 
   return (
     <header className={classes.header}>
-      <nav className={classes.navbar}>
+      <nav
+        className={
+          classes.navbar +
+          ` ${router.asPath.includes('/login') && classes.center}`
+        }
+      >
         <Link href="/">
           <img src={logo.src} alt="FoodDeliveryLogo" />
         </Link>
@@ -54,49 +59,55 @@ export default function MainNavigation(props: Props) {
             <img src={searchIcon.src} alt="search-icon" />
           </form>
         )}
-        <ul className={classes.list}>
-          <li className={classes.cart}>
-            <Link href="/cart">
-              <img src={cartIcon.src} alt="cart-icon" />
-              Cart
-              {cartCtx.items.length > 0 && (
-                <div
-                  className={`${classes['total-quantity']} ${
-                    runEffect ? classes.pop : ''
-                  }`}
-                >
-                  {cartCtx.items
-                    .map((item) => item.quantity)
-                    .reduce((total, currVal) => total + currVal, 0)}
-                </div>
+        {/* dont show cart & login when on login page */}
+        {!router.asPath.includes('/login') && (
+          <ul className={classes.list}>
+            <li className={classes.cart}>
+              {/* show cart only if user is logged in */}
+              {status === 'authenticated' && (
+                <Link href="/cart">
+                  <img src={cartIcon.src} alt="cart-icon" />
+                  Cart
+                  {cartCtx.items.length > 0 && (
+                    <div
+                      className={`${classes['total-quantity']} ${
+                        runEffect ? classes.pop : ''
+                      }`}
+                    >
+                      {cartCtx.items
+                        .map((item) => item.quantity)
+                        .reduce((total, currVal) => total + currVal, 0)}
+                    </div>
+                  )}
+                </Link>
               )}
-            </Link>
-          </li>
-          <li>
-            {status === 'authenticated' ? (
-              <div className={classes.dropdown}>
-                <button className={classes.dropbtn}>
-                  <img src={userIcon.src} alt="user-icon" />
-                  {session.user?.name?.split(' ')[0]}
-                  <img
-                    src={arrowIcon.src}
-                    alt="arrow-icon"
-                    className={classes.arrow}
-                  />
-                </button>
-                <Card className={classes['dropdown-content']}>
-                  <Link href="/profile">Profile</Link>
-                  <Link href="/orders">Orders</Link>
-                  <Link href="" onClick={handleLogout}>
-                    Logout
-                  </Link>
-                </Card>
-              </div>
-            ) : (
-              <Link href="/login">Login</Link>
-            )}
-          </li>
-        </ul>
+            </li>
+            <li>
+              {status === 'authenticated' ? (
+                <div className={classes.dropdown}>
+                  <button className={classes.dropbtn}>
+                    <img src={userIcon.src} alt="user-icon" />
+                    {session.user?.name?.split(' ')[0]}
+                    <img
+                      src={arrowIcon.src}
+                      alt="arrow-icon"
+                      className={classes.arrow}
+                    />
+                  </button>
+                  <Card className={classes['dropdown-content']}>
+                    <Link href="/profile">Profile</Link>
+                    <Link href="/orders">Orders</Link>
+                    <Link href="" onClick={handleLogout}>
+                      Logout
+                    </Link>
+                  </Card>
+                </div>
+              ) : (
+                <Link href="/login">Login</Link>
+              )}
+            </li>
+          </ul>
+        )}
       </nav>
     </header>
   );

@@ -135,15 +135,17 @@ export default function AddressForm({
           />
         </div>
       </div>
-      <div className={classes.isDefault}>
-        <input
-          id="isDefault"
-          type="checkbox"
-          name="isDefault"
-          defaultChecked={address?.isDefault}
-        />
-        <label>Mark as default</label>
-      </div>
+      {router.asPath !== '/checkout' && (
+        <div className={classes.isDefault}>
+          <input
+            id="isDefault"
+            type="checkbox"
+            name="isDefault"
+            defaultChecked={address?.isDefault}
+          />
+          <label>Mark as default</label>
+        </div>
+      )}
       <div className={classes['btns']}>
         <button disabled={isLoading}>{isLoading ? 'Saving..' : 'Save'}</button>
         <button type="button" onClick={handleCancel}>

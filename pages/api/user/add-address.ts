@@ -9,7 +9,18 @@ export default async function handler(
 ) {
   //for adding a new addresses of an user
   if (req.method === 'PATCH') {
-    const { title, name, mobile, pincode, address, city, state } = req.body;
+    const {
+      title,
+      name,
+      mobile,
+      pincode,
+      address,
+      city,
+      state,
+      id,
+      isDefault,
+      location,
+    } = req.body;
     const session = await getSession(req, res);
 
     if (!title || !name || !mobile || !pincode || !address || !city || !state) {
@@ -27,12 +38,22 @@ export default async function handler(
       pincode,
       address,
       city,
-      state
+      state,
+      id,
+      isDefault,
+      location
     );
 
     try {
       const client = await connectToDB();
       const userCollection = getCollection(client, 'users');
+
+      const addresses = (
+        await userCollection.findOne({ email: session && session.user?.email })
+      )?.addresses;
+
+      if (addresses.length < 1) addressObj.isDefault = true;
+
       const dbRes = await userCollection.updateOne(
         { email: session && session.user?.email },
         { $push: { addresses: addressObj } } //pushes address in addresses array

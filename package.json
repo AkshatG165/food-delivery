@@ -21,6 +21,7 @@
     "razorpay": "^2.9.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-redux": "^9.1.0",
     "react-stars": "^2.2.5"
   },
   "devDependencies": {

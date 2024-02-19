@@ -2,10 +2,11 @@ import classes from './Menu.module.css';
 import MenuItem from './MenuItem';
 import Filters from './Filters';
 import { Item } from '@/model/Item';
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '@/store/cart-context';
+import { useEffect, useState } from 'react';
 import { CartItem } from '@/model/CartItem';
 import { useSession } from 'next-auth/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, addItem, removeItem } from '../../store/index';
 
 type Props = {
   items: Item[];
@@ -16,10 +17,11 @@ let dataRetrieved = false;
 let cartItem: CartItem | undefined;
 
 export default function Menu(props: Props) {
+  const cartCtx = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
   const [prefrenceFilter, setPrefrenceFilter] = useState<string | null>();
   const [ratingsFilter, setRatingsFilter] = useState<string | null>();
   const [error, setError] = useState('');
-  const cartCtx = useContext(CartContext);
   const { data: session } = useSession();
 
   //for retreving cart data
@@ -32,12 +34,8 @@ export default function Menu(props: Props) {
         );
       else {
         const cartItems: CartItem[] = (await res.json()).result[0]?.cartItems;
-        if (
-          cartCtx.items.length < 1 &&
-          cartItems?.length > 0 &&
-          !dataRetrieved
-        ) {
-          cartItems.forEach((item) => cartCtx.addItem(item));
+        if (cartCtx.length < 1 && cartItems?.length > 0 && !dataRetrieved) {
+          cartItems.forEach((item) => dispatch(addItem(item)));
           dataRetrieved = true;
         }
       }
@@ -50,23 +48,23 @@ export default function Menu(props: Props) {
     const addItemToDB = async () => {
       const res = await fetch('/api/user/update-cart', {
         method: 'PATCH',
-        body: JSON.stringify({ cartItems: cartCtx.items }),
+        body: JSON.stringify({ cartItems: cartCtx }),
         headers: {
           'Content-type': 'application/json',
         },
       });
       if (!res.ok) {
-        cartCtx.removeItem(cartItem as CartItem);
+        dispatch(removeItem(cartItem));
         setError('Unable to add item, try again after some time.');
       }
     };
     if (cartItem) addItemToDB();
     cartItem = undefined;
-  }, [cartCtx.items]);
+  }, [cartCtx]);
 
   function onItemAdd(item: CartItem) {
     cartItem = item;
-    cartCtx.addItem(item);
+    dispatch(addItem(item));
   }
 
   const menu = props.items

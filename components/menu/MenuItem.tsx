@@ -14,7 +14,12 @@ type Props = {
 export default function MenuItem({ item, onItemAdd }: Props) {
   const { status } = useSession();
   const router = useRouter();
-  const cartItem = new CartItem(item.id, item.name, item.price, 1);
+  const cartItem = {
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    quantity: 1,
+  };
 
   function handleClick() {
     if (status === 'unauthenticated') router.replace('/login');

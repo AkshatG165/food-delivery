@@ -1,23 +1,25 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './Cart.module.css';
 import Card from '../ui/Card';
 import CartItem from './CartItem';
-import { CartContext } from '@/store/cart-context';
 import Link from 'next/link';
 import PriceDetails from './PriceDetails';
 import { CartItem as CartItemModel } from '@/model/CartItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, addItem, removeItem } from '../../store/index';
 
 let dataRetrieved = false;
 let cartItem: CartItemModel | undefined;
 
 export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
-  const cartCtx = useContext(CartContext);
+  const cartCtx = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
   const [error, setError] = useState('');
 
   //initializing cart context
   useEffect(() => {
-    if (cartCtx.items.length < 1 && cartItems?.length > 0 && !dataRetrieved) {
-      cartItems.forEach((item) => cartCtx.addItem(item));
+    if (cartCtx.length < 1 && cartItems?.length > 0 && !dataRetrieved) {
+      cartItems.forEach((item) => dispatch(addItem(item)));
       dataRetrieved = true;
     }
   }, []);
@@ -27,41 +29,41 @@ export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
     const updateItemsInDB = async () => {
       const res = await fetch('/api/user/update-cart', {
         method: 'PATCH',
-        body: JSON.stringify({ cartItems: cartCtx.items }),
+        body: JSON.stringify({ cartItems: cartCtx }),
         headers: {
           'Content-type': 'application/json',
         },
       });
       if (!res.ok) {
-        cartCtx.removeItem(cartItem as CartItemModel);
+        dispatch(removeItem(cartItem));
         setError('Unable to update cart, try again after some time.');
       }
     };
     if (cartItem) updateItemsInDB();
     cartItem = undefined;
-  }, [cartCtx.items]);
+  }, [cartCtx]);
 
   function onItemAdd(item: CartItemModel) {
     cartItem = item;
-    cartCtx.addItem(item);
+    dispatch(addItem(item));
   }
 
   function onItemRemove(item: CartItemModel) {
     cartItem = item;
-    cartCtx.removeItem(item);
+    dispatch(removeItem(item));
   }
 
-  const renderCartItems = cartCtx.items.map((item) => (
+  const renderCartItems = cartCtx.map((item) => (
     <li key={item.id}>
       <CartItem item={item} onItemAdd={onItemAdd} onItemRemove={onItemRemove} />
     </li>
   ));
 
-  const cartTotal = cartCtx.items
+  const cartTotal = cartCtx
     .map((item) => item.quantity * item.price)
     .reduce((total, currVal) => total + currVal, 0);
 
-  return cartCtx.items.length === 0 ? (
+  return cartCtx.length === 0 ? (
     <Card className={classes.empty}>
       Your Cart is Empty!<br></br>
       <Link href="/">Add Items</Link>

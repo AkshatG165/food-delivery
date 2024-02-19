@@ -3,10 +3,11 @@ import classes from './CheckoutForm.module.css';
 import { Address as AddressModel } from '@/model/Address';
 import PriceDetails from '../cart/PriceDetails';
 import Address from './Address';
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '@/store/cart-context';
+import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import logo from '../../public/payment-logo.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, removeItem } from '../../store/index';
 import Order from '@/model/Order';
 
 type Props = {
@@ -16,9 +17,10 @@ type Props = {
 let redirected = false;
 
 export default function CheckoutForm({ addresses }: Props) {
+  const cartCtx = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
   const [selectedAddress, setSelectedAddress] = useState<AddressModel>();
   const router = useRouter();
-  const cartCtx = useContext(CartContext);
   const { data: session } = useSession();
 
   let defaultAddress;
@@ -30,13 +32,13 @@ export default function CheckoutForm({ addresses }: Props) {
 
   useEffect(() => {
     //redirecting to cart if checkout page refreshed
-    if (cartCtx.items.length < 1 && !redirected) {
+    if (cartCtx.length < 1 && !redirected) {
       router.push('/cart');
       redirected = true;
     }
   }, []);
 
-  const cartTotal = cartCtx.items
+  const cartTotal = cartCtx
     .map((item) => item.quantity * item.price)
     .reduce((total, currVal) => total + currVal, 0);
 
@@ -90,7 +92,7 @@ export default function CheckoutForm({ addresses }: Props) {
         //create a new order instance if transaction successful
         const order = new Order(
           session?.user?.email!,
-          cartCtx.items,
+          cartCtx,
           selectedAddress!,
           amount,
           payment.method,
@@ -111,8 +113,8 @@ export default function CheckoutForm({ addresses }: Props) {
         if (!orderRes.ok) return;
 
         //reset the cart in frontend
-        const oldCart = [...cartCtx.items];
-        oldCart.forEach((item) => cartCtx.removeItem(item));
+        const oldCart = [...cartCtx];
+        oldCart.forEach((item) => dispatch(removeItem(item)));
 
         //reset the cart in db
         const cartRes = await fetch('/api/user/update-cart', {

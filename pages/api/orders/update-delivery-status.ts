@@ -8,7 +8,6 @@ export default async function handler(
 ) {
   if (req.method === 'PATCH') {
     const order = req.body;
-    console.log(order);
 
     if (!order) return res.status(422).json({ message: 'Invalid data' });
 

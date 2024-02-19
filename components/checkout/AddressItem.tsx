@@ -50,7 +50,7 @@ export default function AddressItem({
         'Content-type': 'application/json',
       },
     });
-    if (!res.ok) console.log(await res.json());
+    if (!res.ok) await res.json();
     else router.push(router.asPath);
   };
 

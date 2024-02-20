@@ -3,3 +3,9 @@
   width: 90%;
   min-width: 80rem;
 }
+
+.notification {
+  position: fixed;
+  bottom: 5%;
+  width: 100%;
+}

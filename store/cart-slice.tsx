@@ -1,11 +1,11 @@
 import { CartItem } from '@/model/CartItem';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type stateType = {
+type cartType = {
   cart: CartItem[];
 };
 
-const initialState: stateType = {
+const initialState: cartType = {
   cart: [],
 };
 
@@ -29,4 +29,5 @@ const cartSlice = createSlice({
   },
 });
 
+export const { addItem, removeItem } = cartSlice.actions;
 export default cartSlice;

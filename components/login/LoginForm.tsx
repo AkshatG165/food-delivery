@@ -33,7 +33,15 @@ export default function LoginForm() {
       if (!res.ok) {
         const message = (await res.json()).message;
         dispatch(showNotification({ type: 'failure', message }));
-      } else router.replace('/login');
+      } else {
+        dispatch(
+          showNotification({
+            type: 'success',
+            message: 'Account created successfully!',
+          })
+        );
+        router.replace('/login');
+      }
     } else {
       setIsLoading(true);
       const res = await signIn('credentials', { ...data, redirect: false });

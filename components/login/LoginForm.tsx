@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
+import { showNotification } from '@/store/notification-slice';
 
 export default function LoginForm() {
-  const [error, setError] = useState<string | null>();
+  const dispatch = useDispatch();
   const router = useRouter();
   const query = router.query;
   const [isLoading, setIsLoading] = useState(false);
@@ -28,14 +30,21 @@ export default function LoginForm() {
       });
       setIsLoading(false);
 
-      if (!res.ok) setError((await res.json()).message);
+      if (!res.ok)
+        dispatch(
+          showNotification({
+            type: 'failure',
+            message: (await res.json()).message,
+          })
+        );
       else router.replace('/login');
     } else {
       setIsLoading(true);
       const res = await signIn('credentials', { ...data, redirect: false });
       setIsLoading(false);
 
-      if (res && !res.ok) setError(res.error);
+      if (res && !res.ok)
+        dispatch(showNotification({ type: 'failure', message: res.error! }));
       else router.replace('/');
     }
   };
@@ -92,7 +101,6 @@ export default function LoginForm() {
               ? 'Logging in...'
               : 'Login'}
           </button>
-          {error && <p className={classes.error}>{error}</p>}
         </form>
         {query && query.signup === 'true' ? (
           <p>

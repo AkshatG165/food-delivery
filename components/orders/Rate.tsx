@@ -52,13 +52,10 @@ export default function Rate({ order, setShowRate }: Props) {
         'Content-type': 'application/json',
       },
     });
-    if (!res.ok)
-      dispatch(
-        showNotification({
-          type: 'failure',
-          message: (await res.json()).message,
-        })
-      );
+    if (!res.ok) {
+      const message = (await res.json()).message;
+      dispatch(showNotification({ type: 'failure', message }));
+    }
     setIsLoading(false);
     setShowRate(false);
   };
@@ -67,13 +64,11 @@ export default function Rate({ order, setShowRate }: Props) {
     const fetchRatings = async () => {
       setIsLoading(true);
       const res = await fetch(`/api/item?orderId=${order.id}`);
-      if (!res.ok)
-        dispatch(
-          showNotification({
-            type: 'failure',
-            message: (await res.json()).message,
-          })
-        );
+
+      if (!res.ok) {
+        const message = (await res.json()).message;
+        dispatch(showNotification({ type: 'failure', message }));
+      }
       const items = (await res.json()).result;
 
       if (items.length > 0) {

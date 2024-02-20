@@ -79,13 +79,11 @@ export default function CheckoutForm({ addresses }: Props) {
             'Content-type': 'application/json',
           },
         });
-        if (!res.ok)
-          dispatch(
-            showNotification({
-              type: 'failure',
-              message: (await res.json()).message,
-            })
-          );
+
+        if (!res.ok) {
+          const message = (await res.json()).message;
+          dispatch(showNotification({ type: 'failure', message }));
+        }
 
         //redirect to success page after signature validation
         router.push('/success');

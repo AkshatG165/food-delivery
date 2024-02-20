@@ -29,14 +29,10 @@ export default function PersonalInfo({ user }: { user: User }) {
       });
       setIsLoading(false);
 
-      if (!res.ok)
-        dispatch(
-          showNotification({
-            type: 'failure',
-            message: (await res.json()).message,
-          })
-        );
-      else router.push('');
+      if (!res.ok) {
+        const message = (await res.json()).message;
+        dispatch(showNotification({ type: 'failure', message }));
+      } else router.push('');
     }
   };
   const handleCancel = () => {

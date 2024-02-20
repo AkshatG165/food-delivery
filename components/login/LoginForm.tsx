@@ -30,14 +30,10 @@ export default function LoginForm() {
       });
       setIsLoading(false);
 
-      if (!res.ok)
-        dispatch(
-          showNotification({
-            type: 'failure',
-            message: (await res.json()).message,
-          })
-        );
-      else router.replace('/login');
+      if (!res.ok) {
+        const message = (await res.json()).message;
+        dispatch(showNotification({ type: 'failure', message }));
+      } else router.replace('/login');
     } else {
       setIsLoading(true);
       const res = await signIn('credentials', { ...data, redirect: false });

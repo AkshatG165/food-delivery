@@ -53,14 +53,11 @@ export default function AddressItem({
         'Content-type': 'application/json',
       },
     });
-    if (!res.ok)
-      dispatch(
-        showNotification({
-          type: 'failure',
-          message: (await res.json()).message,
-        })
-      );
-    else router.push(router.asPath);
+
+    if (!res.ok) {
+      const message = (await res.json()).message;
+      dispatch(showNotification({ type: 'failure', message }));
+    } else router.push(router.asPath);
   };
 
   return (

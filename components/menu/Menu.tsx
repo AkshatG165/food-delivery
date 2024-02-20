@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 import { CartItem } from '@/model/CartItem';
 import { useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, addItem, removeItem } from '../../store/index';
+import { RootState } from '../../store/index';
+import { addItem, removeItem } from '@/store/cart-slice';
 
 type Props = {
   items: Item[];
@@ -17,7 +18,7 @@ let dataRetrieved = false;
 let cartItem: CartItem | undefined;
 
 export default function Menu(props: Props) {
-  const cartCtx = useSelector((state: RootState) => state.cart);
+  const cartCtx = useSelector((state: RootState) => state.cart.cart);
   const dispatch = useDispatch();
   const [prefrenceFilter, setPrefrenceFilter] = useState<string | null>();
   const [ratingsFilter, setRatingsFilter] = useState<string | null>();

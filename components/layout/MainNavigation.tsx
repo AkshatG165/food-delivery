@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function MainNavigation(props: Props) {
-  const cartCtx = useSelector((state: RootState) => state.cart);
+  const cartCtx = useSelector((state: RootState) => state.cart.cart);
   const [runEffect, setRunEffect] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();

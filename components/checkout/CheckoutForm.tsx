@@ -7,7 +7,8 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import logo from '../../public/payment-logo.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, removeItem } from '../../store/index';
+import { RootState } from '../../store/index';
+import { removeItem } from '@/store/cart-slice';
 import Order from '@/model/Order';
 
 type Props = {
@@ -17,7 +18,7 @@ type Props = {
 let redirected = false;
 
 export default function CheckoutForm({ addresses }: Props) {
-  const cartCtx = useSelector((state: RootState) => state.cart);
+  const cartCtx = useSelector((state: RootState) => state.cart.cart);
   const dispatch = useDispatch();
   const [selectedAddress, setSelectedAddress] = useState<AddressModel>();
   const router = useRouter();

@@ -6,13 +6,14 @@ import Link from 'next/link';
 import PriceDetails from './PriceDetails';
 import { CartItem as CartItemModel } from '@/model/CartItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, addItem, removeItem } from '../../store/index';
+import { RootState } from '../../store/index';
+import { addItem, removeItem } from '@/store/cart-slice';
 
 let dataRetrieved = false;
 let cartItem: CartItemModel | undefined;
 
 export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
-  const cartCtx = useSelector((state: RootState) => state.cart);
+  const cartCtx = useSelector((state: RootState) => state.cart.cart);
   const dispatch = useDispatch();
   const [error, setError] = useState('');
 

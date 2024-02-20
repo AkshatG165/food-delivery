@@ -38,8 +38,6 @@ export default function MainNavigation(props: Props) {
     e.preventDefault();
     await signOut({ redirect: true, callbackUrl: '/' });
   }
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>
-    e.preventDefault();
 
   return (
     <header className={classes.header}>
@@ -53,14 +51,14 @@ export default function MainNavigation(props: Props) {
           <img src={logo.src} alt="FoodDeliveryLogo" />
         </Link>
         {router.asPath === '/' && (
-          <form className={classes['search-form']} onSubmit={handleSubmit}>
+          <div className={classes['search-bar']}>
             <input
               type="text"
               placeholder="Search for items"
               onChange={handleSearch}
             />
             <img src={searchIcon.src} alt="search-icon" />
-          </form>
+          </div>
         )}
         {/* dont show cart & login when on login page */}
         {!router.asPath.includes('/login') && (

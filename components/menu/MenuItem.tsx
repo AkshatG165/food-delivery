@@ -9,9 +9,10 @@ import { CartItem } from '@/model/CartItem';
 type Props = {
   item: Item;
   onItemAdd: (cartItem: CartItem) => void;
+  qty: number | undefined;
 };
 
-export default function MenuItem({ item, onItemAdd }: Props) {
+export default function MenuItem({ item, onItemAdd, qty }: Props) {
   const { status } = useSession();
   const router = useRouter();
   const cartItem = {
@@ -47,6 +48,7 @@ export default function MenuItem({ item, onItemAdd }: Props) {
         <button type="button" onClick={handleClick}>
           Add to Cart
         </button>
+        <span>{qty ? `+${qty}` : ''}</span>
       </li>
     </Card>
   );

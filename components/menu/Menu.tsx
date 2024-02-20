@@ -84,7 +84,12 @@ export default function Menu(props: Props) {
         .includes(props.searchTerm.toLowerCase())
     )
     .map((item) => (
-      <MenuItem key={item.id} item={item} onItemAdd={onItemAdd} />
+      <MenuItem
+        key={item.id}
+        item={item}
+        onItemAdd={onItemAdd}
+        qty={cartCtx.find((cartitem) => cartitem.id === item.id)?.quantity}
+      />
     ));
 
   return (

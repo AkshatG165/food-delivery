@@ -6,10 +6,6 @@
   display: inline-block;
 }
 
-.item:hover {
-  scale: 1.03;
-}
-
 .dot {
   position: absolute;
   width: 15px;
@@ -81,4 +77,8 @@
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
   margin: 1rem;
+}
+
+.item span {
+  color: #ffc404;
 }

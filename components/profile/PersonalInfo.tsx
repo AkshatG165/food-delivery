@@ -2,11 +2,13 @@ import React, { useRef, useState } from 'react';
 import classes from './PersonalInfo.module.css';
 import { useRouter } from 'next/router';
 import { User } from '@/model/User';
+import { useDispatch } from 'react-redux';
+import { showNotification } from '@/store/notification-slice';
 
 export default function PersonalInfo({ user }: { user: User }) {
+  const dispatch = useDispatch();
   const [editing, setEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const router = useRouter();
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -26,7 +28,14 @@ export default function PersonalInfo({ user }: { user: User }) {
         },
       });
       setIsLoading(false);
-      if (!res.ok) setError((await res.json()).message);
+
+      if (!res.ok)
+        dispatch(
+          showNotification({
+            type: 'failure',
+            message: (await res.json()).message,
+          })
+        );
       else router.push('');
     }
   };

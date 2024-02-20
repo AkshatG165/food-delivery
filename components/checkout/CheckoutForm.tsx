@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
 import { removeItem } from '@/store/cart-slice';
 import Order from '@/model/Order';
+import { showNotification } from '@/store/notification-slice';
 
 type Props = {
   addresses: AddressModel[];
@@ -78,7 +79,13 @@ export default function CheckoutForm({ addresses }: Props) {
             'Content-type': 'application/json',
           },
         });
-        if (!res.ok) return;
+        if (!res.ok)
+          dispatch(
+            showNotification({
+              type: 'failure',
+              message: (await res.json()).message,
+            })
+          );
 
         //redirect to success page after signature validation
         router.push('/success');

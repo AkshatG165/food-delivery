@@ -3,6 +3,8 @@ import classes from './AddressItem.module.css';
 import { Address } from '@/model/Address';
 import AddressForm from '../address/AddressForm';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { showNotification } from '@/store/notification-slice';
 
 type Props = {
   address: Address;
@@ -25,6 +27,7 @@ export default function AddressItem({
   setAddNew,
   inProfile,
 }: Props) {
+  const dispatch = useDispatch();
   const router = useRouter();
   const isChecked = selectedAddress
     ? selectedAddress.id === address.id
@@ -50,7 +53,13 @@ export default function AddressItem({
         'Content-type': 'application/json',
       },
     });
-    if (!res.ok) await res.json();
+    if (!res.ok)
+      dispatch(
+        showNotification({
+          type: 'failure',
+          message: (await res.json()).message,
+        })
+      );
     else router.push(router.asPath);
   };
 

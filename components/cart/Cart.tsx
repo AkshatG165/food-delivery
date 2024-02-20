@@ -8,6 +8,7 @@ import { CartItem as CartItemModel } from '@/model/CartItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
 import { addItem, removeItem } from '@/store/cart-slice';
+import { showNotification } from '@/store/notification-slice';
 
 let dataRetrieved = false;
 let cartItem: CartItemModel | undefined;
@@ -15,7 +16,6 @@ let cartItem: CartItemModel | undefined;
 export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
   const cartCtx = useSelector((state: RootState) => state.cart.cart);
   const dispatch = useDispatch();
-  const [error, setError] = useState('');
 
   //initializing cart context
   useEffect(() => {
@@ -37,7 +37,12 @@ export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
       });
       if (!res.ok) {
         dispatch(removeItem(cartItem));
-        setError('Unable to update cart, try again after some time.');
+        dispatch(
+          showNotification({
+            type: 'failure',
+            message: 'Unable to update cart, try again after some time',
+          })
+        );
       }
     };
     if (cartItem) updateItemsInDB();

@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
 import { addItem, removeItem } from '@/store/cart-slice';
+import { showNotification } from '@/store/notification-slice';
 
 type Props = {
   items: Item[];
@@ -22,7 +23,6 @@ export default function Menu(props: Props) {
   const dispatch = useDispatch();
   const [prefrenceFilter, setPrefrenceFilter] = useState<string | null>();
   const [ratingsFilter, setRatingsFilter] = useState<string | null>();
-  const [error, setError] = useState('');
   const { data: session } = useSession();
 
   //for retreving cart data
@@ -30,8 +30,12 @@ export default function Menu(props: Props) {
     const getCartItems = async () => {
       const res = await fetch(`/api/user?email=${session?.user?.email}`);
       if (!res.ok)
-        setError(
-          'Unable to fetch cart items, please try again after some time'
+        dispatch(
+          showNotification({
+            type: 'failure',
+            message:
+              'Unable to fetch cart items, please try again after some time',
+          })
         );
       else {
         const cartItems: CartItem[] = (await res.json()).result[0]?.cartItems;
@@ -56,7 +60,12 @@ export default function Menu(props: Props) {
       });
       if (!res.ok) {
         dispatch(removeItem(cartItem));
-        setError('Unable to add item, try again after some time.');
+        dispatch(
+          showNotification({
+            type: 'failure',
+            message: 'Unable to add item, try again after some time',
+          })
+        );
       }
     };
     if (cartItem) addItemToDB();

@@ -2,6 +2,8 @@ import classes from './AddressForm.module.css';
 import { Address } from '@/model/Address';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { showNotification } from '@/store/notification-slice';
 
 type Props = {
   address?: Address;
@@ -16,9 +18,9 @@ export default function AddressForm({
   addNew,
   setAddNew,
 }: Props) {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,8 +46,18 @@ export default function AddressForm({
     setIsLoading(false);
     if (!res.ok)
       addNew
-        ? setError('Unable to add address')
-        : setError('Unable to update address');
+        ? dispatch(
+            showNotification({
+              type: 'failure',
+              message: 'Unable to add address',
+            })
+          )
+        : dispatch(
+            showNotification({
+              type: 'failure',
+              message: 'Unable to update address',
+            })
+          );
 
     if (setEditing) setEditing(false);
     if (setAddNew) setAddNew(false);

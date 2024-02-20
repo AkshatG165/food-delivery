@@ -5,6 +5,8 @@ import Order from '@/model/Order';
 import { useEffect, useState } from 'react';
 import { Item } from '@/model/Item';
 import LoadingUI from '../ui/LoadingUI';
+import { useDispatch } from 'react-redux';
+import { showNotification } from '@/store/notification-slice';
 
 type Props = {
   order: Order;
@@ -18,6 +20,7 @@ type Rating = {
 };
 
 export default function Rate({ order, setShowRate }: Props) {
+  const dispatch = useDispatch();
   const [oldRatings, setOldRatings] = useState<Rating[]>([]);
   const [isLoding, setIsLoading] = useState(false);
   const ratings = [...oldRatings];
@@ -49,7 +52,13 @@ export default function Rate({ order, setShowRate }: Props) {
         'Content-type': 'application/json',
       },
     });
-    if (!res.ok) return;
+    if (!res.ok)
+      dispatch(
+        showNotification({
+          type: 'failure',
+          message: (await res.json()).message,
+        })
+      );
     setIsLoading(false);
     setShowRate(false);
   };
@@ -58,7 +67,13 @@ export default function Rate({ order, setShowRate }: Props) {
     const fetchRatings = async () => {
       setIsLoading(true);
       const res = await fetch(`/api/item?orderId=${order.id}`);
-      if (!res.ok) return;
+      if (!res.ok)
+        dispatch(
+          showNotification({
+            type: 'failure',
+            message: (await res.json()).message,
+          })
+        );
       const items = (await res.json()).result;
 
       if (items.length > 0) {

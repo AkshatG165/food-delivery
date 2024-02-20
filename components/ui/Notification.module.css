@@ -1,16 +1,16 @@
-.backdrop {
-  position: fixed;
-  z-index: 1;
-  bottom: 5%;
+.container {
+  width: fit-content;
+  margin: auto;
 }
 
 .notification {
   position: relative;
-  z-index: 2;
   padding: 1rem;
   width: 20rem;
+  margin: auto;
   text-align: center;
   font-size: 17px;
+  color: whitesmoke;
   animation: fade-slide-up 0.3s ease-out forwards;
 }
 
@@ -26,11 +26,16 @@
   position: absolute;
   background-color: inherit;
   padding: 0;
-  border: 1px solid black;
   border-radius: 3px;
   width: 17px;
   right: 7px;
   top: 7px;
+  color: whitesmoke;
+  border: none;
+}
+
+.notification button:hover {
+  border: 1px solid whitesmoke;
 }
 
 .notification progress[value] {
@@ -50,6 +55,18 @@
 }
 
 .notification progress[value]::-webkit-progress-value {
-  background-color: rgb(224, 224, 224);
+  background-color: whitesmoke;
   border-radius: 0 2px 2px 2px;
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(4rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

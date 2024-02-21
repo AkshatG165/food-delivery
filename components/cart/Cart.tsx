@@ -8,44 +8,17 @@ import { CartItem as CartItemModel } from '@/model/CartItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
 import { addItem, removeItem } from '@/store/cart-slice';
-import { showNotification } from '@/store/notification-slice';
+import { updateCartItems } from '@/store/cart-actions';
 
-let dataRetrieved = false;
 let cartItem: CartItemModel | undefined;
 
 export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
   const cartCtx = useSelector((state: RootState) => state.cart.cart);
   const dispatch = useDispatch();
 
-  //initializing cart context
+  //for updating cart data
   useEffect(() => {
-    if (cartCtx.length < 1 && cartItems?.length > 0 && !dataRetrieved) {
-      cartItems.forEach((item) => dispatch(addItem(item)));
-      dataRetrieved = true;
-    }
-  }, []);
-
-  //for updating data
-  useEffect(() => {
-    const updateItemsInDB = async () => {
-      const res = await fetch('/api/user/update-cart', {
-        method: 'PATCH',
-        body: JSON.stringify({ cartItems: cartCtx }),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      });
-      if (!res.ok) {
-        dispatch(removeItem(cartItem));
-        dispatch(
-          showNotification({
-            type: 'failure',
-            message: 'Unable to update cart, try again after some time',
-          })
-        );
-      }
-    };
-    if (cartItem) updateItemsInDB();
+    if (cartItem) dispatch(updateCartItems(cartCtx) as any);
     cartItem = undefined;
   }, [cartCtx]);
 

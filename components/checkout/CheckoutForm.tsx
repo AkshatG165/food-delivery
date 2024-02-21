@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import logo from '../../public/payment-logo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
-import { removeItem, resetCart } from '@/store/cart-slice';
+import { resetCart } from '@/store/cart-slice';
 import Order from '@/model/Order';
 import { showNotification } from '@/store/notification-slice';
 
@@ -97,12 +97,6 @@ export default function CheckoutForm({ addresses }: Props) {
             showNotification({ type: 'failure', message: 'Payment Failed' })
           );
         const payment = await paymentRes.json();
-        dispatch(
-          showNotification({
-            type: 'success',
-            message: 'Payment Successful! Placing order...',
-          })
-        );
 
         //create a new order instance if transaction successful
         const order = new Order(
@@ -160,7 +154,7 @@ export default function CheckoutForm({ addresses }: Props) {
             dispatch(
               showNotification({
                 type: 'success',
-                message: `Your order - ${order.id} has been delivered!`,
+                message: `Your recent order has been delivered!`,
               })
             );
         }, 120000);
@@ -172,7 +166,7 @@ export default function CheckoutForm({ addresses }: Props) {
       },
       image: logo.src,
       theme: {
-        color: '#ffc404',
+        color: '#2874f0',
       },
     };
 

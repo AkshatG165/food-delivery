@@ -18,7 +18,7 @@ export default function Success() {
     <div className={classes.backdrop}>
       <Card className={redirectClasses}>
         <img src={successIcon.src} alt="success-icon" />
-        <h1>Payment Successful!</h1>
+        <h1>Order Placed Successfully!</h1>
         <Link href="/orders" onClick={handleRedirect}>
           Go to Orders
         </Link>

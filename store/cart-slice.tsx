@@ -26,8 +26,11 @@ const cartSlice = createSlice({
       });
       state.cart = state.cart.filter((item) => item.quantity > 0);
     },
+    resetCart(state) {
+      state.cart = initialState.cart;
+    },
   },
 });
 
-export const { addItem, removeItem } = cartSlice.actions;
+export const { addItem, removeItem, resetCart } = cartSlice.actions;
 export default cartSlice;

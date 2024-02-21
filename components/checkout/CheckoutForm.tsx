@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import logo from '../../public/payment-logo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
-import { removeItem } from '@/store/cart-slice';
+import { removeItem, resetCart } from '@/store/cart-slice';
 import Order from '@/model/Order';
 import { showNotification } from '@/store/notification-slice';
 
@@ -92,8 +92,17 @@ export default function CheckoutForm({ addresses }: Props) {
         const paymentRes = await fetch(
           `/api/razorpay/payments?id=${response.razorpay_payment_id}`
         );
-        if (!paymentRes.ok) return;
+        if (!paymentRes.ok)
+          dispatch(
+            showNotification({ type: 'failure', message: 'Payment Failed' })
+          );
         const payment = await paymentRes.json();
+        dispatch(
+          showNotification({
+            type: 'success',
+            message: 'Payment Successful! Placing order...',
+          })
+        );
 
         //create a new order instance if transaction successful
         const order = new Order(
@@ -116,11 +125,16 @@ export default function CheckoutForm({ addresses }: Props) {
             'Content-type': 'application/json',
           },
         });
-        if (!orderRes.ok) return;
+        if (!orderRes.ok)
+          dispatch(
+            showNotification({
+              type: 'failure',
+              message: 'Unable to place order, your payment will be refunded',
+            })
+          );
 
         //reset the cart in frontend
-        const oldCart = [...cartCtx];
-        oldCart.forEach((item) => dispatch(removeItem(item)));
+        dispatch(resetCart());
 
         //reset the cart in db
         const cartRes = await fetch('/api/user/update-cart', {
@@ -141,6 +155,14 @@ export default function CheckoutForm({ addresses }: Props) {
               'Content-type': 'application/json',
             },
           });
+
+          if (res.ok)
+            dispatch(
+              showNotification({
+                type: 'success',
+                message: `Your order - ${order.id} has been delivered!`,
+              })
+            );
         }, 120000);
       },
       prefill: {
@@ -158,8 +180,11 @@ export default function CheckoutForm({ addresses }: Props) {
     razorpay.open();
 
     razorpay.on('payment.failed', function (response: any) {
-      alert(
-        `${response.error.description} \n\nOrder ID - ${response.error.metadata.order_id}\nPayment ID - ${response.error.metadata.payment_id}`
+      dispatch(
+        showNotification({
+          type: 'failure',
+          message: `${response.error.description} \n\nOrder ID - ${response.error.metadata.order_id}\nPayment ID - ${response.error.metadata.payment_id}`,
+        })
       );
     });
   }

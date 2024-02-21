@@ -12,7 +12,7 @@ import { updateCartItems } from '@/store/cart-actions';
 
 let cartItem: CartItemModel | undefined;
 
-export default function Cart({ cartItems }: { cartItems: CartItemModel[] }) {
+export default function Cart() {
   const cartCtx = useSelector((state: RootState) => state.cart.cart);
   const dispatch = useDispatch();
 

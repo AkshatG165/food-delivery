@@ -57,7 +57,15 @@ export default function AddressItem({
     if (!res.ok) {
       const message = (await res.json()).message;
       dispatch(showNotification({ type: 'failure', message }));
-    } else router.push(router.asPath);
+    } else {
+      dispatch(
+        showNotification({
+          type: 'success',
+          message: 'Address deleted successfully!',
+        })
+      );
+      router.push(router.asPath);
+    }
   };
 
   return (

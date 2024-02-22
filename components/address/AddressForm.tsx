@@ -59,12 +59,19 @@ export default function AddressForm({
             })
           );
     } else {
-      dispatch(
-        showNotification({
-          type: 'success',
-          message: 'Address updated successfully!',
-        })
-      );
+      addNew
+        ? dispatch(
+            showNotification({
+              type: 'success',
+              message: 'Address added successfully!',
+            })
+          )
+        : dispatch(
+            showNotification({
+              type: 'success',
+              message: 'Address updated successfully!',
+            })
+          );
     }
 
     if (setEditing) setEditing(false);

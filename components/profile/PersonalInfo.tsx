@@ -32,7 +32,15 @@ export default function PersonalInfo({ user }: { user: User }) {
       if (!res.ok) {
         const message = (await res.json()).message;
         dispatch(showNotification({ type: 'failure', message }));
-      } else router.push('');
+      } else {
+        dispatch(
+          showNotification({
+            type: 'success',
+            message: 'Name updated successfully!',
+          })
+        );
+        router.push('');
+      }
     }
   };
   const handleCancel = () => {

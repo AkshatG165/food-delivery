@@ -55,7 +55,15 @@ export default function Rate({ order, setShowRate }: Props) {
     if (!res.ok) {
       const message = (await res.json()).message;
       dispatch(showNotification({ type: 'failure', message }));
+    } else {
+      dispatch(
+        showNotification({
+          type: 'success',
+          message: 'Thank you for rating us!',
+        })
+      );
     }
+
     setIsLoading(false);
     setShowRate(false);
   };

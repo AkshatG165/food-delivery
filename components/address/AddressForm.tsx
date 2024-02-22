@@ -44,7 +44,7 @@ export default function AddressForm({
       },
     });
     setIsLoading(false);
-    if (!res.ok)
+    if (!res.ok) {
       addNew
         ? dispatch(
             showNotification({
@@ -58,6 +58,14 @@ export default function AddressForm({
               message: 'Unable to update address',
             })
           );
+    } else {
+      dispatch(
+        showNotification({
+          type: 'success',
+          message: 'Address updated successfully!',
+        })
+      );
+    }
 
     if (setEditing) setEditing(false);
     if (setAddNew) setAddNew(false);

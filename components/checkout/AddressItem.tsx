@@ -79,6 +79,7 @@ export default function AddressItem({
             name="address"
             value={address.id}
             onChange={handleSelect}
+            onClick={handleSelect}
             checked={isChecked}
           />
         )}

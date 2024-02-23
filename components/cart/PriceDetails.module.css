@@ -35,17 +35,15 @@
   border-top: 1px lightgrey solid;
 }
 
-.price-details a {
-  display: block;
-  width: auto;
-  text-align: center;
-  text-decoration: none;
-  color: black;
+.price-details button {
+  width: 100%;
   background-color: #ffc404;
   border-radius: 5px;
   padding: 10px;
+  border: none;
+  font-size: 1rem;
 }
 
-.price-details a:hover {
-  scale: 1.05;
+.price-details button:hover {
+  scale: 1.03;
 }

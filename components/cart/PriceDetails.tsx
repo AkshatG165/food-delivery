@@ -1,6 +1,5 @@
 import classes from './PriceDetails.module.css';
 import Card from '../ui/Card';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -18,7 +17,7 @@ export default function PriceDetails({ cartTotal, handleCheckout }: Props) {
     if (router.asPath === '/checkout') {
       const confirm = window.confirm('Are you sure you want to proceed?');
       if (confirm && handleCheckout) handleCheckout(grandTotal);
-    }
+    } else router.push('/checkout');
   }
 
   return (
@@ -46,9 +45,9 @@ export default function PriceDetails({ cartTotal, handleCheckout }: Props) {
         <span className={classes.text}>Grand Total</span>
         <span className={classes.value}>{grandTotal.toFixed(2)}</span>
       </div>
-      <Link href={`/checkout`} onClick={onCheckout}>
+      <button onClick={onCheckout}>
         {router.asPath === '/cart' ? 'Place Order' : 'Checkout'}
-      </Link>
+      </button>
     </Card>
   );
 }
